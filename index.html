@@ -344,6 +344,135 @@
     margin: 12px auto 0;
   }
 
+  /* ────────────── CHAPTER MAP OVERLAY ────────────── */
+  /* Hero image starts near-black; brightens once the map dissolves */
+  .hero .fresco {
+    filter: brightness(0.12);
+    transition: filter 1.8s cubic-bezier(.4, 0, .2, 1);
+  }
+  .hero.map-gone .fresco { filter: brightness(1); }
+
+  /* Signature permanently hidden — name is shown in chapter map instead */
+  .hero .hero-signature { display: none; }
+
+  /* Hide the original scroll cue while the map is up */
+  .hero:not(.map-gone) .scroll-cue { opacity: 0; pointer-events: none; }
+
+  .chapter-map {
+    position: absolute;
+    inset: 0;
+    z-index: 4;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 48px 32px;
+    transition: opacity 1.2s ease;
+    pointer-events: none; /* items are non-interactive — scroll does the work */
+  }
+  .chapter-map.dissolving { opacity: 0; }
+
+  .cm-title {
+    margin-bottom: 28px;
+    text-align: center;
+    opacity: 0;
+    transition: opacity 0.7s ease;
+  }
+  .cm-title.visible { opacity: 1; }
+  .cm-name-line {
+    font-family: 'Italianno', cursive;
+    font-style: normal;
+    font-size: 48px;
+    font-weight: 400;
+    color: var(--ivory);
+    letter-spacing: 0.02em;
+    line-height: 1.1;
+    margin-bottom: 6px;
+  }
+  .cm-subtitle-line {
+    font-family: var(--f-accent);
+    font-style: normal;
+    font-size: 9px;
+    letter-spacing: 0.52em;
+    text-transform: uppercase;
+    color: rgba(244, 236, 218, 0.45);
+  }
+
+  .cm-items { display: flex; flex-direction: column; min-width: 300px; }
+
+  .cm-item {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    padding: 9px 0;
+    border-bottom: 1px solid rgba(244, 236, 218, 0.07);
+    opacity: 0;
+    transform: translateY(7px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+  }
+  .cm-item:last-child { border-bottom: none; }
+  .cm-item.visible { opacity: 1; transform: translateY(0); }
+
+  .cm-roman {
+    font-family: var(--f-accent);
+    font-style: italic;
+    font-size: 12px;
+    color: var(--red);
+    min-width: 22px;
+  }
+  .cm-dash { color: rgba(244, 236, 218, 0.18); font-size: 9px; }
+  .cm-name {
+    font-size: 10px;
+    letter-spacing: 0.32em;
+    text-transform: uppercase;
+    color: rgba(244, 236, 218, 0.62);
+    flex: 1;
+  }
+  .cm-dot {
+    width: 4px; height: 4px; border-radius: 50%;
+    background: var(--sage); opacity: 0;
+    transition: opacity 0.4s ease 0.2s;
+    flex-shrink: 0;
+  }
+  .cm-item.visible .cm-dot { opacity: 1; }
+
+  .cm-concierge {
+    font-family: var(--f-accent);
+    font-style: italic;
+    font-size: 13px;
+    color: rgba(244, 236, 218, 0.32);
+    margin-top: 26px;
+    letter-spacing: 0.06em;
+    opacity: 0;
+    transition: opacity 0.9s ease;
+  }
+  .cm-concierge.visible { opacity: 1; }
+
+  .cm-scroll-cue {
+    position: absolute;
+    bottom: 32px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 9px;
+    letter-spacing: 0.42em;
+    text-transform: uppercase;
+    color: rgba(244, 236, 218, 0.28);
+    opacity: 0;
+    transition: opacity 0.7s ease;
+    writing-mode: vertical-rl;
+    pointer-events: none;
+    white-space: nowrap;
+  }
+  .cm-scroll-cue.visible { opacity: 1; }
+  .cm-scroll-cue::after {
+    content: "";
+    display: block;
+    width: 1px;
+    height: 36px;
+    background: rgba(244, 236, 218, 0.25);
+    margin: 10px auto 0;
+  }
+
   /* ────────────── SECTION-SPECIFIC PALETTES ────────────── */
   section#origins      { background: var(--ivory); }
   section#product      { background: var(--ivory); }
@@ -520,6 +649,79 @@
     font-size: 13px;
     color: var(--sage-soft);
     line-height: 1.5;
+  }
+
+  /* ── Dossier accordion (Creative Tech) ── */
+  .dossier-stack {
+    margin-top: 48px;
+    border: 1px solid var(--hair);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+  .dossier-file {
+    border-bottom: 1px solid var(--hair);
+    position: relative;
+    cursor: pointer;
+    background: var(--ivory);
+  }
+  .dossier-file:last-child { border-bottom: none; }
+  .dossier-file::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 3px;
+    background: var(--sage-deep);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+  .dossier-file.open::before, .dossier-file:hover::before { opacity: 1; }
+  .dossier-header {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 16px 24px;
+    user-select: none;
+  }
+  .dossier-tab {
+    font-size: 11px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    font-weight: 600;
+    color: var(--sage-deep);
+    min-width: 140px;
+  }
+  .dossier-spec {
+    font-family: 'Courier New', monospace;
+    font-size: 12px;
+    color: var(--ink);
+    flex: 1;
+    opacity: 0.85;
+  }
+  .dossier-arrow {
+    font-size: 16px;
+    color: var(--ink-soft);
+    transition: transform 0.3s ease;
+    line-height: 1;
+  }
+  .dossier-file.open .dossier-arrow { transform: rotate(90deg); }
+  .dossier-body {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease, padding 0.3s ease;
+    padding: 0 24px 0 144px;
+  }
+  .dossier-file.open .dossier-body {
+    max-height: 200px;
+    padding: 0 24px 20px 144px;
+  }
+  .dossier-body p {
+    font-size: 15px;
+    color: var(--ink-soft);
+    line-height: 1.75;
+    border-top: 1px solid var(--hair);
+    padding-top: 14px;
+    font-style: normal;
+    font-family: var(--f-body);
   }
 
   .fan-stage {
@@ -973,7 +1175,6 @@
   @media (max-width: 900px) {
     nav.index ul { gap: 16px; }
     nav.index ul a { font-size: 9px; letter-spacing: 0.22em; }
-    nav.index ul a .roman { display: none; }
     .proof-grid, .modes-grid, .lab-grid, .exp-grid { grid-template-columns: 1fr; }
     .stat-row { grid-template-columns: repeat(2, 1fr); }
     .stat { border-bottom: 1px solid var(--hair); }
@@ -1212,7 +1413,7 @@
     font-size: 11px;
     letter-spacing: 0.32em;
     text-transform: uppercase;
-    color: var(--sage);
+    color: var(--sage-deep);
     background: transparent;
     padding: 0;
     display: inline-block;
@@ -1542,6 +1743,25 @@
 <!-- ═════════════════════ HERO ═════════════════════ -->
 <section class="hero" data-screen-label="00 Hero">
   <img class="fresco" src="assets/hero-concierge.png" alt="Concierge at a green pastel reception desk between two table lamps" data-comment-anchor="40c766419a-img">
+
+  <!-- ── Chapter Map Overlay ── -->
+  <div class="chapter-map" id="chapterMap" aria-hidden="true">
+    <div class="cm-title" id="cmTitle">
+      <div class="cm-name-line">Svetlana Zigalkina de Boer</div>
+      <div class="cm-subtitle-line">Portfolio in 6 Chapters</div>
+    </div>
+    <div class="cm-items">
+      <div class="cm-item" data-delay="150"><span class="cm-roman">I</span><span class="cm-dash">—</span><span class="cm-name">The Creative Technologist</span><span class="cm-dot"></span></div>
+      <div class="cm-item" data-delay="320"><span class="cm-roman">II</span><span class="cm-dash">—</span><span class="cm-name">Product</span><span class="cm-dot"></span></div>
+      <div class="cm-item" data-delay="490"><span class="cm-roman">III</span><span class="cm-dash">—</span><span class="cm-name">The Lab</span><span class="cm-dot"></span></div>
+      <div class="cm-item" data-delay="660"><span class="cm-roman">IV</span><span class="cm-dash">—</span><span class="cm-name">Energy</span><span class="cm-dot"></span></div>
+      <div class="cm-item" data-delay="830"><span class="cm-roman">V</span><span class="cm-dash">—</span><span class="cm-name">Certifications</span><span class="cm-dot"></span></div>
+      <div class="cm-item" data-delay="1000"><span class="cm-roman">VI</span><span class="cm-dash">—</span><span class="cm-name">Contact</span><span class="cm-dot"></span></div>
+    </div>
+    <div class="cm-concierge" id="cmConcierge">The concierge is expecting you</div>
+    <div class="cm-scroll-cue" id="cmScrollCue">Scroll</div>
+  </div>
+
   <svg class="hero-signature" id="heroSignature" viewBox="0 0 1700 280" preserveAspectRatio="xMidYMid meet" aria-label="Svetlana de Boer Portfolio">
     <defs>
       <clipPath id="heroSignatureStrokeClip"><rect id="heroSignatureStrokeRect" x="0" y="0" width="0" height="280"></rect></clipPath>
@@ -1578,26 +1798,46 @@
       <div class="stat"><div class="num">10+</div><div class="label">Applications</div></div>
     </div>
 
-    <div class="modes-grid reveal">
-      <div class="mode">
-        <span class="roman">I</span>
-        <h4>Blockchain</h4>
-        <p>Public chains for transparency. Shipped supply-chain traceability across the highly regulated energy and oil &amp; gas sector — where provenance is non-negotiable.</p>
+    <div class="dossier-stack reveal">
+      <div class="dossier-file open">
+        <div class="dossier-header">
+          <div class="dossier-tab">Blockchain</div>
+          <div class="dossier-spec">5 products · public chains · NFT · tokenization · regulated industries</div>
+          <div class="dossier-arrow">›</div>
+        </div>
+        <div class="dossier-body">
+          <p>Public chains for transparency, traceability and auditability. Supply-chain traceability across the highly regulated energy and oil &amp; gas sector — where provenance is non-negotiable.</p>
+        </div>
       </div>
-      <div class="mode">
-        <span class="roman">II</span>
-        <h4>Artificial Intelligence</h4>
-        <p>Use-case framing, rapid prototyping and hackathons across Moonshot programs. Paired with the right ontology, the value compounds. Currently vibe-coding with Claude across cowork, design, code and beyond.</p>
+      <div class="dossier-file">
+        <div class="dossier-header">
+          <div class="dossier-tab">Artificial Intelligence</div>
+          <div class="dossier-spec">use-case framing · agentic AI · process automation · hackathons · MS Copilot · Claude Code</div>
+          <div class="dossier-arrow">›</div>
+        </div>
+        <div class="dossier-body">
+          <p>Use-case framing, rapid prototyping and hackathons across Moonshot programs — including the Electrification Moonshot. Use cases delivered: regulatory analysis, new value propositions through automated customer engagement and gap analysis, EV station localization, and live charging recommendations for EV owners — and many more. Increasingly building with agentic AI: designing and deploying agents that automate complex, multi-step business processes end-to-end — from data gathering to decision-making to output. Paired with the right ontology, the value compounds. Tools: MS Copilot, Copilot Studio, Claude Design, Claude Cowork &amp; Claude Code.</p>
+        </div>
       </div>
-      <div class="mode">
-        <span class="roman">III</span>
-        <h4>IoT</h4>
-        <p>Wearable devices, geolocation, permissions, device management — at refinery scale.</p>
+      <div class="dossier-file">
+        <div class="dossier-header">
+          <div class="dossier-tab">IoT</div>
+          <div class="dossier-spec">wearables · geolocation · business analysis · product delivery · refinery scale</div>
+          <div class="dossier-arrow">›</div>
+        </div>
+        <div class="dossier-body">
+          <p>Full business analysis and product delivery for IoT solutions at refinery scale — wearable devices, geolocation, permissions management, and device management. Translating complex operational requirements into shipped products used by real operators in high-stakes environments.</p>
+        </div>
       </div>
-      <div class="mode">
-        <span class="roman">IV</span>
-        <h4>Metaverse · 3D</h4>
-        <p>Tableau, PowerBI, Blender, Unity. Data visualisation as storytelling.</p>
+      <div class="dossier-file">
+        <div class="dossier-header">
+          <div class="dossier-tab">3D · Metaverse</div>
+          <div class="dossier-spec">Blender · Unity · Tableau · PowerBI · Google Veo · Claude Design · data as storytelling</div>
+          <div class="dossier-arrow">›</div>
+        </div>
+        <div class="dossier-body">
+          <p>Tableau, PowerBI, Blender, Unity. Data visualisation as storytelling — translating complex systems into something a board can read. Expanding into AI-native creative tools: Google Nano Banana, Veo for generative video, and Claude Design for interface and visual design.</p>
+        </div>
       </div>
     </div>
   </div>
@@ -1615,7 +1855,7 @@
     <!-- CENTRAL MEDIA: scrubs with scroll — doors open as user scrolls down. -->
     <div class="expand-frame">
       <div class="expand-media">
-        <video id="productHeroVideo" data-src="assets/product-hero.mp4" muted playsinline preload="auto"></video>
+        <video id="productHeroVideo" data-src="assets/product-hero.mp4?v=2" muted playsinline preload="auto"></video>
       </div>
     </div>
 
@@ -1841,7 +2081,7 @@
       <!-- CENTRAL MEDIA: scrubs with scroll — doors open as user scrolls down. -->
       <div class="expand-frame">
         <div class="expand-media">
-          <video id="energyHeroVideo" data-src="assets/energy-hero.mp4" muted playsinline preload="auto"></video>
+          <video id="energyHeroVideo" data-src="assets/energy-hero.mp4?v=2" muted playsinline preload="auto"></video>
         </div>
       </div>
 
@@ -1864,28 +2104,28 @@
         <h2>Energy</h2>
       </div>
 
-      <p class="narrative reveal">Not energy expertise. Frontier readiness. Traceability, monitoring, and reporting software for energy products that had no precedent.</p>
+      <p class="narrative reveal">Six years of energy domain expertise. Building decarbonisation, traceability, monitoring, and reporting software for energy products — many without precedent, vendor, or playbook.</p>
 
       <div class="proof-grid reveal">
         <div class="proof">
-          <div class="tag">Hydrogen</div>
-          <h3>Hydrogen Traceability</h3>
-          <p>Two-year commercial and digital readiness assessment in response to the upcoming RFNBO regulations for renewable hydrogen. Built the software layer before the market was ready — alongside the construction of a green hydrogen plant.</p>
-        </div>
-        <div class="proof">
-          <div class="tag">Thermal</div>
-          <h3>Molten Salt Storage</h3>
-          <p>Identified the opportunity for "green" steam with thermal storage — a new storage solution. Created specs from scratch: no prior art, no vendor to evaluate. Had to design both the digital solution and the business needs in parallel.</p>
-        </div>
-        <div class="proof">
           <div class="tag">Carriers</div>
-          <h3>Green Power · Steam · Batteries</h3>
-          <p>Deep domain work across Peer-to-Peer Energy Exchange, EMS and VPP. Energy only gets optimised when the actors orchestrate together — that coordination layer is where the value lands.</p>
+          <h3>Green Power, Steam, Hydrogen &amp; Microgrids</h3>
+          <p>24/7 energy monitoring for Shell and customers across power, hydrogen, and steam — built in response to market demand and incoming regulation. RFNBO compliance for hydrogen, certificate traceability for green power, and identification frameworks for steam. Each product shipped as a combined digital and commercial offering, launched before the plants were operational and before the customers knew they needed it.</p>
+        </div>
+        <div class="proof">
+          <div class="tag">Storage</div>
+          <h3>Molten Salt &amp; Battery Storage</h3>
+          <p>The energy grid is inflexible — it can't easily absorb surplus or respond to demand spikes, and that rigidity is the bottleneck. Storage is what makes it manageable: capturing energy when the grid is full, releasing it when demand peaks. Built digital products to monitor and report on energy and the carbon footprint in battery storage and molten salt thermal. No vendor to evaluate, no prior art to follow. Worked directly with plant engineers to understand how the assets behaved, then translated that into a software solution and business model from scratch.</p>
+        </div>
+        <div class="proof">
+          <div class="tag">Optimisation</div>
+          <h3>P2P · EMS · VPP</h3>
+          <p>Deep domain work across Peer-to-Peer Energy Exchange, Energy Management Systems, and Virtual Power Plants. Energy only gets optimised when the actors orchestrate together — that coordination layer is where the value lands.</p>
         </div>
         <div class="proof">
           <div class="tag">Regulation</div>
           <h3>EU + US Frameworks</h3>
-          <p>Guarantees of Origin, RED III, RFNBO rules, IRA incentives, RECs. How certification markets and trading interact.</p>
+          <p>Guarantees of Origin, RED III, RFNBO rules, RECs. How certification markets and trading interact.</p>
         </div>
       </div>
 
@@ -1908,7 +2148,7 @@
          Drop the file at assets/certs-hero.mp4 to activate. -->
     <div class="expand-frame">
       <div class="expand-media">
-        <video id="certsHeroVideo" data-src="assets/certs-hero.mp4" muted playsinline preload="auto"></video>
+        <video id="certsHeroVideo" data-src="assets/certs-hero.mp4?v=1" muted playsinline preload="auto"></video>
       </div>
     </div>
 
@@ -2065,6 +2305,7 @@
     els.forEach(el => io.observe(el));
   })();
 
+  /* Signature animation — called by the chapter map JS after the overlay dissolves */
   (function () {
     const svg = document.getElementById('heroSignature');
     const seed = document.getElementById('heroSignatureSeed');
@@ -2072,51 +2313,101 @@
     const fillRect = document.getElementById('heroSignatureFillRect');
     if (!svg || !seed || !strokeRect || !fillRect) return;
 
-    const VIEWBOX_H = 280;
-    const DURATION = 3200;       // total reveal time (ms)
-    const STROKE_FILL_GAP = 280; // ms the fill trails the stroke by
-    const START_DELAY = 300;
+    const DURATION = 3200;
+    const STROKE_FILL_GAP = 280;
+    const START_DELAY = 400;
 
-    const begin = () => {
+    window._startSignature = () => {
       const bbox = seed.getBBox();
-      const padX = 120;
-      const padY = 60;
+      const padX = 120; const padY = 60;
       const x0 = Math.floor(bbox.x - padX);
       const y0 = Math.floor(bbox.y - padY);
       const totalW = Math.ceil(bbox.width + padX * 2);
       const totalH = Math.ceil(bbox.height + padY * 2);
-      strokeRect.setAttribute('x', x0);
-      strokeRect.setAttribute('y', y0);
-      fillRect.setAttribute('x', x0);
-      fillRect.setAttribute('y', y0);
+      strokeRect.setAttribute('x', x0); strokeRect.setAttribute('y', y0);
+      fillRect.setAttribute('x', x0);   fillRect.setAttribute('y', y0);
       strokeRect.setAttribute('height', totalH);
       fillRect.setAttribute('height', totalH);
 
-      const ease = (t) => {
-        // easeInOutCubic — smooth start and finish
-        return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
-      };
-
+      const ease = (t) => t < 0.5 ? 4*t*t*t : 1 - Math.pow(-2*t+2, 3)/2;
       let started = null;
       function frame(now) {
         if (started == null) started = now;
         const t = now - started;
-
         const strokeT = Math.max(0, Math.min(1, t / DURATION));
         const fillT   = Math.max(0, Math.min(1, (t - STROKE_FILL_GAP) / DURATION));
         strokeRect.setAttribute('width', Math.round(totalW * ease(strokeT)));
         fillRect.setAttribute('width',   Math.round(totalW * ease(fillT)));
-
         if (fillT < 1) requestAnimationFrame(frame);
       }
       setTimeout(() => requestAnimationFrame(frame), START_DELAY);
     };
 
+    /* Pre-measure while fonts load so the first call is instant */
     if (document.fonts && document.fonts.ready) {
-      document.fonts.ready.then(begin);
-    } else {
-      begin();
+      document.fonts.ready.then(() => { /* ready, waiting for chapter map */ });
     }
+  })();
+
+  /* ── Chapter Map: animate in, then dissolve on first scroll ── */
+  (function () {
+    const hero    = document.querySelector('section.hero');
+    const map     = document.getElementById('chapterMap');
+    const title   = document.getElementById('cmTitle');
+    const items   = Array.from(document.querySelectorAll('.cm-item'));
+    const concierge = document.getElementById('cmConcierge');
+    const scrollCue = document.getElementById('cmScrollCue');
+    if (!map || !hero) return;
+
+    let dissolved = false;
+
+    /* Lock page scroll during chapter map so the scroll gesture only dismisses
+       the overlay — it does not move the page. */
+    document.body.style.overflow = 'hidden';
+
+    /* Step 1: animate the title + chapter rows in */
+    setTimeout(() => title.classList.add('visible'), 200);
+    items.forEach(item => {
+      const delay = parseInt(item.dataset.delay || 0);
+      setTimeout(() => item.classList.add('visible'), delay + 200);
+    });
+
+    /* Step 2: after all rows, show concierge line + scroll cue */
+    const lastDelay = Math.max(...items.map(i => parseInt(i.dataset.delay || 0)));
+    setTimeout(() => {
+      concierge.classList.add('visible');
+      setTimeout(() => scrollCue.classList.add('visible'), 400);
+    }, lastDelay + 500);
+
+    /* Step 3: first scroll/wheel gesture dissolves the map and reveals the concierge.
+       The page itself hasn't moved (overflow:hidden), so after unlocking the user
+       sees the full hero image at position 0. */
+    function dissolve() {
+      if (dissolved) return;
+      dissolved = true;
+      window.removeEventListener('wheel',     dissolve);
+      window.removeEventListener('touchmove', dissolve);
+      window.removeEventListener('keydown',   dissolveOnKey);
+
+      map.classList.add('dissolving');
+      hero.classList.add('map-gone');
+
+      /* Unlock scroll after the dissolve transition so the page starts at top */
+      setTimeout(() => {
+        document.body.style.overflow = '';
+        setTimeout(() => window._startSignature && window._startSignature(), 300);
+      }, 600);
+
+      setTimeout(() => map.remove(), 1400);
+    }
+
+    function dissolveOnKey(e) {
+      if (['ArrowDown', 'Space', 'PageDown'].includes(e.code)) dissolve();
+    }
+
+    window.addEventListener('wheel',     dissolve, { passive: true });
+    window.addEventListener('touchmove', dissolve, { passive: true });
+    window.addEventListener('keydown',   dissolveOnKey);
   })();
 
   (function () {
@@ -2368,6 +2659,15 @@
     window.addEventListener('resize',  onScroll);
     update();
   })();
+
+  /* ── Dossier accordion toggle ── */
+  document.querySelectorAll('.dossier-file').forEach(file => {
+    file.addEventListener('click', () => {
+      const isOpen = file.classList.contains('open');
+      file.closest('.dossier-stack').querySelectorAll('.dossier-file').forEach(f => f.classList.remove('open'));
+      if (!isOpen) file.classList.add('open');
+    });
+  });
 </script>
 </body>
 </html>
