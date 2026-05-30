@@ -389,6 +389,15 @@
     line-height: 1.1;
     margin-bottom: 6px;
   }
+  .cm-role-line {
+    font-family: var(--f-display);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 10px;
+  }
   .cm-subtitle-line {
     font-family: var(--f-accent);
     font-style: normal;
@@ -1189,6 +1198,16 @@
   }
 
   /* ────────────── ROTATING WORD ────────────── */
+  .po-stamp {
+    font-family: var(--f-display);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.45em;
+    text-transform: uppercase;
+    color: var(--red);
+    margin-bottom: 14px;
+    display: block;
+  }
   .role-line {
     font-size: clamp(34px, 4vw, 56px) !important;
     line-height: 1.2 !important;
@@ -1748,6 +1767,7 @@
   <div class="chapter-map" id="chapterMap" aria-hidden="true">
     <div class="cm-title" id="cmTitle">
       <div class="cm-name-line">Svetlana Zigalkina de Boer</div>
+      <div class="cm-role-line">Product Owner</div>
       <div class="cm-subtitle-line">Portfolio in 6 Chapters</div>
     </div>
     <div class="cm-items">
@@ -1785,16 +1805,17 @@
       <h2>The Creative<br>Technologist</h2>
     </div>
 
-    <p class="narrative italic reveal role-line">She is a <span class="rotator" id="roleRotator" aria-live="polite"><span class="rot-word">Builder.</span><span class="rot-word">Designer.</span><span class="rot-word">Facilitator.</span></span></p>
+    <span class="po-stamp reveal">Product Owner</span>
+    <p class="narrative italic reveal role-line">She is also a <span class="rotator" id="roleRotator" aria-live="polite"><span class="rot-word">Builder.</span><span class="rot-word">Technologist.</span><span class="rot-word">Facilitator.</span></span></p>
 
     <div class="fleuron reveal">✦ ✦ ✦</div>
 
-    <p class="narrative reveal">She builds things outside work to understand things inside work. That curiosity is not trainable. It either exists or it doesn't.</p>
+    <p class="narrative reveal">8+ years taking emerging technology from concept to commercial product. At Shell, I ran the full cycle — from opportunity identification and pen-and-paper PoVs, through 4 POCs, to a €22M+ rNPV product in the 24/7 clean energy domain. Comfortable in deep tech (blockchain, GenAI, IoT, energy systems) and equally focused on the business case behind it. Building AI-native, with hands-on experience in agentic workflows, Claude Code, and MS Copilot.</p>
 
     <div class="stat-row reveal">
       <div class="stat"><div class="num">8+</div><div class="label">Years</div></div>
       <div class="stat"><div class="num">€2M</div><div class="label">Annual R&amp;D Portfolio</div></div>
-      <div class="stat"><div class="num">$20M+</div><div class="label">RNPV</div></div>
+      <div class="stat"><div class="num">€22M+</div><div class="label">rNPV</div></div>
       <div class="stat"><div class="num">10+</div><div class="label">Applications</div></div>
     </div>
 
@@ -1863,83 +1884,16 @@
   </div>
 </div>
 
-<section id="product" class="chapter" data-screen-label="02 Product">
-  <div class="chapter-inner">
-    <div class="title-card reveal">
-      <div class="chapter-number">— Chapter II —</div>
-      <h2>Product</h2>
-      <div class="subtitle">Full lifecycle ownership across four operating modes — discovery, definition, delivery, decision.</div>
-    </div>
-
-    <!-- ── Horizontal gallery (Gallery4-style, Wes Anderson palette) ── -->
-    <div class="gallery reveal" id="productGallery">
-      <div class="gallery-header">
-        <div class="lead">
-          <div class="eyebrow">— Selected Work —</div>
-          <h3>Six Proofs</h3>
-          <p>End-to-end product ownership across blockchain, IoT, GenAI and enterprise delivery.</p>
-        </div>
-        <div class="gallery-nav">
-          <button type="button" class="prev" aria-label="Previous">‹</button>
-          <button type="button" class="next" aria-label="Next">›</button>
-        </div>
-      </div>
-
-      <div class="gallery-rail-wrap">
-        <div class="gallery-rail" tabindex="0">
-          <div class="gcard gcard--red">
-            <div class="gcard-top"><span class="gcard-tag">Blockchain</span><span class="gcard-num">I</span></div>
-            <div class="gcard-rule"></div>
-            <h4>24/7 Energy Traceability</h4>
-            <p>Hourly proof that the energy being sold or consumed is green. Owned end-to-end as PO for traceability, carbon tracking and certification — raising transparency, accountability and customer trust across global energy markets.</p>
-          </div>
-          <div class="gcard gcard--ivory">
-            <div class="gcard-top"><span class="gcard-tag">IoT</span><span class="gcard-num">II</span></div>
-            <div class="gcard-rule"></div>
-            <h4>Worker Safety Wearables</h4>
-            <p>Functional requirements for a deployed multi-site product at Shell refineries. Wearables, geolocation, permissions, large dev team, enterprise scale.</p>
-          </div>
-          <div class="gcard gcard--deep">
-            <div class="gcard-top"><span class="gcard-tag">RFP / RFI</span><span class="gcard-num">III</span></div>
-            <div class="gcard-rule"></div>
-            <h4>Vendor Evaluation</h4>
-            <p>Formal evaluation for IoT platform — wrote the brief, assessed vendors, recommended whether to continue internal build or switch. Intellectual honesty about build vs buy.</p>
-          </div>
-          <div class="gcard gcard--ivory">
-            <div class="gcard-top"><span class="gcard-tag">GenAI</span><span class="gcard-num">IV</span></div>
-            <div class="gcard-rule"></div>
-            <h4>Electrification Moonshot</h4>
-            <p>Technical Lead, GenAI Electrification 2024. Ran the full innovation cycle — regulatory market analysis, opportunity identification, prototyping, executive pitch.</p>
-          </div>
-          <div class="gcard gcard--red">
-            <div class="gcard-top"><span class="gcard-tag">Deepfake</span><span class="gcard-num">V</span></div>
-            <div class="gcard-rule"></div>
-            <h4>C2PA + Blockchain</h4>
-            <p>Identified AI-generated content as a governance problem two years before C2PA became the industry answer. Prototype shipped, pitch delivered to Shell leadership.</p>
-          </div>
-          <div class="gcard gcard--ivory">
-            <div class="gcard-top"><span class="gcard-tag">ServiceNow</span><span class="gcard-num">VI</span></div>
-            <div class="gcard-rule"></div>
-            <h4>Enterprise Delivery</h4>
-            <p>Global ServiceNow rollouts at Accenture. Key communication role between client stakeholders and developers — also led train-the-trainer programs on-site at client teams.</p>
-          </div>
-        </div>
-      </div>
-      <div class="gallery-progress"></div>
-    </div>
-  </div>
-</section>
-
-<!-- ═════════════════════ II · EXPERIMENT — SCROLL-DRIVEN GRID ═════════════════════
+<!-- ═════════════════════ II · SCROLL-DRIVEN GRID ═════════════════════
      Duplicate of Chapter II. Same six proofs, but arranged as a fixed 3×2 grid
      that all fits on one viewport. A scroll-driven reveal pins the grid and
      uncovers blocks (colour first) then text, one step at a time. Reversible.  -->
-<section id="product-experiment" class="chapter" data-screen-label="02b Product · Reveal">
+<section id="product-experiment" class="chapter" data-screen-label="02 Product">
   <div class="exp-stage">
     <div class="exp-sticky">
       <div class="chapter-inner">
         <div class="exp-title-card">
-          <div class="chapter-number">— Chapter II · Reveal —</div>
+          <div class="chapter-number">— Chapter II —</div>
           <h2>Six Proofs</h2>
           <div class="subtitle">Scroll to reveal each chapter of the work — blocks first, words second. Reverse to return.</div>
         </div>
@@ -2148,7 +2102,7 @@
          Drop the file at assets/certs-hero.mp4 to activate. -->
     <div class="expand-frame">
       <div class="expand-media">
-        <video id="certsHeroVideo" data-src="assets/certs-hero.mp4?v=1" muted playsinline preload="auto"></video>
+        <video id="certsHeroVideo" data-src="assets/certs-hero.mp4?v=2" muted playsinline preload="auto"></video>
       </div>
     </div>
 
