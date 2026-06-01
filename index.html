@@ -220,6 +220,96 @@
     color: var(--ivory);
   }
 
+  /* ────────────── HOTEL HERO ────────────── */
+  .hotel-hero {
+    position: relative;
+    width: 100%;
+    min-height: 100vh;
+    background: #1a0a0a;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+  .hotel-hero .hotel-img-wrap {
+    position: relative;
+    width: clamp(320px, 72vw, 900px);
+    user-select: none;
+  }
+  .hotel-hero .hotel-img-wrap img {
+    width: 100%;
+    height: auto;
+    display: block;
+    position: relative;
+    z-index: 2;
+  }
+  /* Floor overlay divs — positioned over the hotel image */
+  .hotel-hero .floor-overlay {
+    position: absolute;
+    left: 4%;
+    width: 92%;
+    background: rgba(15, 3, 3, 0.78);
+    z-index: 3;
+    transition: opacity 0.6s ease;
+    pointer-events: none;
+  }
+  .hotel-hero .floor-overlay.active { opacity: 0; }
+  /* Floor label that appears beside the active floor */
+  .hotel-hero .floor-label {
+    position: absolute;
+    right: calc(100% + 24px);
+    top: 50%;
+    transform: translateY(-50%);
+    text-align: right;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    pointer-events: none;
+    white-space: nowrap;
+    z-index: 10;
+  }
+  .hotel-hero .floor-label.visible { opacity: 1; }
+  .hotel-hero .floor-label .fl-roman {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-style: italic;
+    font-size: 13px;
+    color: #B83A2C;
+    letter-spacing: 0.15em;
+    display: block;
+    margin-bottom: 4px;
+  }
+  .hotel-hero .floor-label .fl-name {
+    font-family: 'Jost', sans-serif;
+    font-weight: 300;
+    font-size: 11px;
+    letter-spacing: 0.38em;
+    text-transform: uppercase;
+    color: rgba(244, 236, 218, 0.75);
+    display: block;
+  }
+  /* Scroll cue — hidden until animation completes */
+  .hotel-hero .hotel-scroll-cue {
+    position: absolute;
+    bottom: 32px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 10px;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    color: rgba(244, 236, 218, 0.5);
+    writing-mode: vertical-rl;
+    opacity: 0;
+    transition: opacity 0.8s ease;
+  }
+  .hotel-hero .hotel-scroll-cue.visible { opacity: 1; }
+  .hotel-hero .hotel-scroll-cue::after {
+    content: "";
+    display: block;
+    width: 1px;
+    height: 40px;
+    background: rgba(244, 236, 218, 0.4);
+    margin: 12px auto 0;
+  }
+
   /* ────────────── SECTION-SPECIFIC PALETTES ────────────── */
   section#origins      { background: var(--ivory); }
   section#product      { background: var(--ivory); }
@@ -1495,6 +1585,47 @@
     </ul>
   </div>
 </nav>
+
+<!-- ═════════════════════ HOTEL HERO ═════════════════════ -->
+<section class="hotel-hero" id="hotelHero">
+  <div class="hotel-img-wrap" id="hotelImgWrap">
+    <img src="assets/hotel-red.png" alt="Portfolio Hotel — Svetlana de Boer" id="hotelImg" draggable="false">
+
+    <!-- Floor overlays: top/height set by JS after image loads -->
+    <div class="floor-overlay" id="floorOverlay0">
+      <div class="floor-label" id="floorLabel0">
+        <span class="fl-roman">I</span>
+        <span class="fl-name">About</span>
+      </div>
+    </div>
+    <div class="floor-overlay" id="floorOverlay1">
+      <div class="floor-label" id="floorLabel1">
+        <span class="fl-roman">II</span>
+        <span class="fl-name">Product</span>
+      </div>
+    </div>
+    <div class="floor-overlay" id="floorOverlay2">
+      <div class="floor-label" id="floorLabel2">
+        <span class="fl-roman">III</span>
+        <span class="fl-name">AI Lab</span>
+      </div>
+    </div>
+    <div class="floor-overlay" id="floorOverlay3">
+      <div class="floor-label" id="floorLabel3">
+        <span class="fl-roman">IV</span>
+        <span class="fl-name">Energy</span>
+      </div>
+    </div>
+    <div class="floor-overlay" id="floorOverlay4">
+      <div class="floor-label" id="floorLabel4">
+        <span class="fl-roman">V</span>
+        <span class="fl-name">Credentials</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="hotel-scroll-cue" id="hotelScrollCue">Scroll</div>
+</section>
 
 <!-- ═════════════════════ I — THE CREATIVE TECHNOLOGIST ═════════════════════ -->
 <section id="origins" class="chapter" data-screen-label="01 Creative Technologist">
