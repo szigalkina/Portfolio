@@ -353,8 +353,6 @@
   section#lab          { background: var(--red); color: var(--ivory); }
   section#energy       { background: var(--sage-deep); color: var(--ivory); }
   section#certs        { background: var(--pink); }
-  section#contact      { background: var(--sage); }
-
   /* Certs opener carries the pink ground so it matches the chapter */
   #certsExpand                            { background: var(--pink); }
   #certsExpand .placeholder--bg           { background: var(--pink); }
@@ -766,11 +764,6 @@
   .status.live { color: var(--sage-deep); border-color: var(--sage-deep); background: var(--sage-soft); }
   .status.idea { color: var(--ink-soft); }
 
-  section#contact .frame {
-    background: var(--sage-soft);
-    max-width: 620px;
-    margin: 0 auto;
-  }
   .contact-lines {
     margin-top: 18px;
     font-family: var(--f-accent);
@@ -2238,15 +2231,27 @@
   })();
 
   (function () {
-    const nav = document.getElementById('nav');
-    let last = window.scrollY;
-    let ticking = false;
-    window.addEventListener('scroll', () => {
+    var nav = document.getElementById('nav');
+    var last = window.scrollY;
+    var ticking = false;
+    // Hide nav on initial load (hotel hero is showing)
+    nav.classList.add('hidden');
+    window.addEventListener('scroll', function () {
       if (!ticking) {
-        requestAnimationFrame(() => {
-          const y = window.scrollY;
-          if (y > 120 && y > last) nav.classList.add('hidden');
-          else nav.classList.remove('hidden');
+        requestAnimationFrame(function () {
+          var y = window.scrollY;
+          var hotelHero = document.getElementById('hotelHero');
+          var hotelH = hotelHero ? hotelHero.offsetHeight : window.innerHeight;
+          if (y < hotelH) {
+            // Still in/near hotel hero — keep nav hidden
+            nav.classList.add('hidden');
+          } else if (y > last) {
+            // Scrolling down past hotel — hide nav
+            nav.classList.add('hidden');
+          } else {
+            // Scrolling up past hotel — show nav
+            nav.classList.remove('hidden');
+          }
           last = y;
           ticking = false;
         });
