@@ -2071,6 +2071,110 @@
 </footer>
 
 <script>
+  /* ── Hotel Hero: floor-by-floor reveal animation ── */
+  (function () {
+    const hero      = document.getElementById('hotelHero');
+    const img       = document.getElementById('hotelImg');
+    const scrollCue = document.getElementById('hotelScrollCue');
+    if (!hero || !img) return;
+
+    // Floor zones as [topPercent, heightPercent] of the hotel image height.
+    // Calibrated to the hotel-red.png floor bands (top to bottom):
+    // Roof (charcoal): ~0–14% — not a floor, no overlay
+    // Floor I  (blush rose)  : ~14–30%
+    // Floor II (crimson)     : ~30–45%
+    // Floor III (scarlet)    : ~45–58%
+    // Floor IV (deep red)    : ~58–71%
+    // Floor V  (burgundy)    : ~71–90%
+    const FLOORS = [
+      { top: 14, h: 16 }, // I   — About
+      { top: 30, h: 15 }, // II  — Product
+      { top: 45, h: 13 }, // III — AI Lab
+      { top: 58, h: 13 }, // IV  — Energy
+      { top: 71, h: 19 }, // V   — Credentials
+    ];
+
+    const HOLD_MS = 1500; // ms each floor stays lit
+    const FADE_MS = 400;  // must match CSS transition duration
+
+    function positionOverlays() {
+      const imgH = img.offsetHeight;
+      if (!imgH) return;
+      FLOORS.forEach(function (f, i) {
+        const overlay = document.getElementById('floorOverlay' + i);
+        if (!overlay) return;
+        overlay.style.top    = (f.top / 100 * imgH) + 'px';
+        overlay.style.height = (f.h   / 100 * imgH) + 'px';
+      });
+    }
+
+    function activateFloor(i) {
+      // First dim all floors
+      FLOORS.forEach(function (_, j) {
+        const ov = document.getElementById('floorOverlay' + j);
+        const lb = document.getElementById('floorLabel' + j);
+        if (ov) ov.classList.remove('active');
+        if (lb) lb.classList.remove('visible');
+      });
+
+      if (i >= FLOORS.length) {
+        // All floors done — light everything up
+        FLOORS.forEach(function (_, j) {
+          const ov = document.getElementById('floorOverlay' + j);
+          if (ov) ov.classList.add('active');
+        });
+        scrollCue.classList.add('visible');
+        enableScrollAway();
+        return;
+      }
+
+      const overlay = document.getElementById('floorOverlay' + i);
+      const label   = document.getElementById('floorLabel' + i);
+      if (overlay) overlay.classList.add('active');
+      setTimeout(function () {
+        if (label) label.classList.add('visible');
+      }, FADE_MS / 2);
+
+      setTimeout(function () { activateFloor(i + 1); }, HOLD_MS);
+    }
+
+    function enableScrollAway() {
+      document.body.style.overflow = '';
+      var dismissed = false;
+      function dismiss() {
+        if (dismissed) return;
+        dismissed = true;
+        window.removeEventListener('wheel',     dismiss);
+        window.removeEventListener('touchmove', dismiss);
+        hero.style.transition = 'opacity 0.7s ease';
+        hero.style.opacity    = '0';
+        setTimeout(function () {
+          hero.style.display = 'none';
+        }, 750);
+      }
+      window.addEventListener('wheel',     dismiss, { passive: true });
+      window.addEventListener('touchmove', dismiss, { passive: true });
+    }
+
+    function runAnimation() {
+      positionOverlays();
+      // Lock scroll during animation
+      document.body.style.overflow = 'hidden';
+      // Small delay so page paint settles
+      setTimeout(function () { activateFloor(0); }, 600);
+    }
+
+    // Start when image is loaded
+    if (img.complete && img.naturalHeight > 0) {
+      runAnimation();
+    } else {
+      img.addEventListener('load', runAnimation);
+    }
+
+    // Re-position overlays on resize
+    window.addEventListener('resize', positionOverlays);
+  })();
+
   (function () {
     const nav = document.getElementById('nav');
     let last = window.scrollY;
