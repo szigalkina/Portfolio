@@ -318,7 +318,37 @@
   }
 
   /* ────────────── SECTION-SPECIFIC PALETTES ────────────── */
-  section#origins      { background: var(--ivory); }
+  section#about        { background: var(--ivory); }
+  .about-intro {
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    gap: 48px;
+    align-items: start;
+    margin-bottom: 40px;
+  }
+  .about-photo {
+    width: 100%;
+    aspect-ratio: 3/4;
+    object-fit: cover;
+    object-position: center top;
+    border: 1px solid var(--hair);
+    display: block;
+  }
+  .about-text { display: flex; flex-direction: column; gap: 20px; }
+  .tech-skills-header {
+    font-family: var(--f-display);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.45em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    margin: 32px 0 0;
+    display: block;
+  }
+  @media (max-width: 700px) {
+    .about-intro { grid-template-columns: 1fr; }
+    .about-photo { max-width: 200px; }
+  }
   section#product      { background: var(--ivory); }
   section#lab          { background: var(--red); color: var(--ivory); }
   section#energy       { background: var(--sage-deep); color: var(--ivory); }
@@ -1646,26 +1676,30 @@
 </section>
 
 <!-- ═════════════════════ I — THE CREATIVE TECHNOLOGIST ═════════════════════ -->
-<section id="origins" class="chapter" data-screen-label="01 Creative Technologist">
+<section id="about" class="chapter" data-screen-label="01 About">
   <div class="chapter-inner">
     <div class="title-card reveal">
-      <div class="chapter-number">— Chapter I —</div>
-      <h2>The Creative<br>Technologist</h2>
+      <div class="chapter-number">— Floor I —</div>
+      <h2>About</h2>
     </div>
 
-    <span class="po-stamp reveal">Product Owner</span>
-    <p class="narrative italic reveal role-line">She is also a <span class="rotator" id="roleRotator" aria-live="polite"><span class="rot-word">Builder.</span><span class="rot-word">Technologist.</span><span class="rot-word">Facilitator.</span></span></p>
-
-    <div class="fleuron reveal">✦ ✦ ✦</div>
-
-    <p class="narrative reveal">8+ years taking emerging technology from concept to commercial product. At Shell, I ran the full cycle — from opportunity identification and pen-and-paper PoVs, through 4 POCs, to a €22M+ rNPV product in the 24/7 clean energy domain. Comfortable in deep tech (blockchain, GenAI, IoT, energy systems) and equally focused on the business case behind it. Building AI-native, with hands-on experience in agentic workflows, Claude Code, and MS Copilot.</p>
-
-    <div class="stat-row reveal">
-      <div class="stat"><div class="num">8+</div><div class="label">Years</div></div>
-      <div class="stat"><div class="num">€2M</div><div class="label">Annual R&amp;D Portfolio</div></div>
-      <div class="stat"><div class="num">€22M+</div><div class="label">rNPV</div></div>
-      <div class="stat"><div class="num">10+</div><div class="label">Applications</div></div>
+    <div class="about-intro reveal">
+      <img src="assets/svetlana-photo.jpg" alt="Svetlana de Boer" class="about-photo">
+      <div class="about-text">
+        <span class="po-stamp">Product Owner</span>
+        <p class="narrative italic role-line">She is also a <span class="rotator" id="roleRotator" aria-live="polite"><span class="rot-word">Builder.</span><span class="rot-word">Technologist.</span><span class="rot-word">Facilitator.</span></span></p>
+        <div class="fleuron">✦ ✦ ✦</div>
+        <p class="narrative">8+ years taking emerging technology from concept to commercial product. At Shell, I ran the full cycle — from opportunity identification and pen-and-paper PoVs, through 4 POCs, to a €22M+ rNPV product in the 24/7 clean energy domain. Comfortable in deep tech (blockchain, GenAI, IoT, energy systems) and equally focused on the business case behind it. Building AI-native, with hands-on experience in agentic workflows, Claude Code, and MS Copilot.</p>
+        <div class="stat-row">
+          <div class="stat"><div class="num">8+</div><div class="label">Years</div></div>
+          <div class="stat"><div class="num">€2M</div><div class="label">Annual R&amp;D Portfolio</div></div>
+          <div class="stat"><div class="num">€22M+</div><div class="label">rNPV</div></div>
+          <div class="stat"><div class="num">10+</div><div class="label">Applications</div></div>
+        </div>
+      </div>
     </div>
+
+    <span class="tech-skills-header reveal">Technology Skills</span>
 
     <div class="dossier-stack reveal">
       <div class="dossier-file open">
