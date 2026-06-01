@@ -231,90 +231,42 @@
     position: relative;
     width: 100%;
     min-height: 100vh;
-    background: #1a0a0a;
+    background: var(--ivory);
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
-    overflow: hidden;
+    padding: 80px 32px 60px;
   }
   .hotel-hero .hotel-img-wrap {
     position: relative;
-    width: clamp(320px, 72vw, 900px);
+    width: clamp(280px, 60vw, 780px);
     user-select: none;
   }
   .hotel-hero .hotel-img-wrap img {
     width: 100%;
     height: auto;
     display: block;
-    position: relative;
-    z-index: 2;
   }
-  /* Floor overlay divs — positioned over the hotel image */
-  .hotel-hero .floor-overlay {
-    position: absolute;
-    left: 4%;
-    width: 92%;
-    background: rgba(15, 3, 3, 0.78);
-    z-index: 3;
-    transition: opacity 0.6s ease;
-    pointer-events: none;
-    opacity: 1;
-  }
-  .hotel-hero .floor-overlay.active { opacity: 0; }
-  /* Floor label that appears beside the active floor */
-  .hotel-hero .floor-label {
-    position: absolute;
-    right: calc(100% + 24px);
-    top: 50%;
-    transform: translateY(-50%);
-    text-align: right;
-    opacity: 0;
-    transition: opacity 0.4s ease;
-    pointer-events: none;
-    white-space: nowrap;
-    z-index: 10;
-  }
-  .hotel-hero .floor-label.visible { opacity: 1; }
-  .hotel-hero .floor-label .fl-roman {
-    font-family: 'Playfair Display', Georgia, serif;
-    font-style: italic;
-    font-size: 13px;
-    color: #B83A2C;
-    letter-spacing: 0.15em;
-    display: block;
-    margin-bottom: 4px;
-  }
-  .hotel-hero .floor-label .fl-name {
-    font-family: 'Jost', sans-serif;
-    font-weight: 300;
-    font-size: 11px;
+  .hotel-hero .hotel-tagline {
+    margin-top: 40px;
+    text-align: center;
     letter-spacing: 0.38em;
-    text-transform: uppercase;
-    color: rgba(244, 236, 218, 0.75);
-    display: block;
-  }
-  /* Scroll cue — hidden until animation completes */
-  .hotel-hero .hotel-scroll-cue {
-    position: absolute;
-    bottom: 32px;
-    left: 50%;
-    transform: translateX(-50%);
     font-size: 10px;
-    letter-spacing: 0.4em;
     text-transform: uppercase;
-    color: rgba(244, 236, 218, 0.5);
-    writing-mode: vertical-rl;
-    opacity: 0;
-    transition: opacity 0.8s ease;
+    color: var(--ink-soft);
+    font-family: var(--f-display);
+    font-weight: 400;
   }
-  .hotel-hero .hotel-scroll-cue.visible { opacity: 1; }
-  .hotel-hero .hotel-scroll-cue::after {
-    content: "";
+  .hotel-hero .hotel-tagline em {
+    font-family: var(--f-accent);
+    font-style: italic;
+    font-size: 14px;
+    letter-spacing: 0.06em;
+    text-transform: none;
+    color: var(--red);
     display: block;
-    width: 1px;
-    height: 40px;
-    background: rgba(244, 236, 218, 0.4);
-    margin: 12px auto 0;
+    margin-top: 6px;
   }
 
   /* ────────────── SECTION-SPECIFIC PALETTES ────────────── */
@@ -1055,15 +1007,7 @@
   }
 
   @media (max-width: 640px) {
-    .hotel-hero .floor-label {
-      right: auto;
-      left: 8px;
-      top: auto;
-      bottom: 8px;
-      transform: none;
-      text-align: left;
-      white-space: normal;
-    }
+    .hotel-hero .hotel-img-wrap { width: clamp(260px, 88vw, 500px); }
   }
 
   /* ────────────── ROTATING WORD ────────────── */
@@ -1629,43 +1573,13 @@
 
 <!-- ═════════════════════ HOTEL HERO ═════════════════════ -->
 <section class="hotel-hero" id="hotelHero">
-  <div class="hotel-img-wrap" id="hotelImgWrap">
-    <img src="assets/hotel-red.png" alt="Portfolio Hotel — Svetlana de Boer" id="hotelImg" draggable="false">
-
-    <!-- Floor overlays: top/height set by JS after image loads -->
-    <div class="floor-overlay" id="floorOverlay0">
-      <div class="floor-label" id="floorLabel0">
-        <span class="fl-roman">I</span>
-        <span class="fl-name">About</span>
-      </div>
-    </div>
-    <div class="floor-overlay" id="floorOverlay1">
-      <div class="floor-label" id="floorLabel1">
-        <span class="fl-roman">II</span>
-        <span class="fl-name">Product</span>
-      </div>
-    </div>
-    <div class="floor-overlay" id="floorOverlay2">
-      <div class="floor-label" id="floorLabel2">
-        <span class="fl-roman">III</span>
-        <span class="fl-name">AI Lab</span>
-      </div>
-    </div>
-    <div class="floor-overlay" id="floorOverlay3">
-      <div class="floor-label" id="floorLabel3">
-        <span class="fl-roman">IV</span>
-        <span class="fl-name">Energy</span>
-      </div>
-    </div>
-    <div class="floor-overlay" id="floorOverlay4">
-      <div class="floor-label" id="floorLabel4">
-        <span class="fl-roman">V</span>
-        <span class="fl-name">Credentials</span>
-      </div>
-    </div>
+  <div class="hotel-img-wrap">
+    <img src="assets/hotel-red.png" alt="Portfolio Hotel — Svetlana de Boer" draggable="false">
   </div>
-
-  <div class="hotel-scroll-cue" id="hotelScrollCue">Scroll</div>
+  <div class="hotel-tagline">
+    Portfolio · Svetlana Zigalkina de Boer
+    <em>Builder. Technologist. Facilitator.</em>
+  </div>
 </section>
 
 <!-- ═════════════════════ I — THE CREATIVE TECHNOLOGIST ═════════════════════ -->
@@ -2094,109 +2008,6 @@
 </footer>
 
 <script>
-  /* ── Hotel Hero: floor-by-floor reveal animation ── */
-  (function () {
-    const hero      = document.getElementById('hotelHero');
-    const img       = document.getElementById('hotelImg');
-    const scrollCue = document.getElementById('hotelScrollCue');
-    if (!hero || !img || !scrollCue) return;
-
-    // Floor zones as [topPercent, heightPercent] of the hotel image height.
-    // Calibrated to the hotel-red.png floor bands (top to bottom):
-    // Roof (charcoal): ~0–14% — not a floor, no overlay
-    // Floor I  (blush rose)  : ~14–30%
-    // Floor II (crimson)     : ~30–45%
-    // Floor III (scarlet)    : ~45–58%
-    // Floor IV (deep red)    : ~58–71%
-    // Floor V  (burgundy)    : ~71–90%
-    const FLOORS = [
-      { top: 14, h: 16 }, // I   — About
-      { top: 30, h: 15 }, // II  — Product
-      { top: 45, h: 13 }, // III — AI Lab
-      { top: 58, h: 13 }, // IV  — Energy
-      { top: 71, h: 19 }, // V   — Credentials
-    ];
-
-    const HOLD_MS = 1500; // ms each floor stays lit
-    const FADE_MS = 400;  // must match CSS transition duration
-
-    function positionOverlays() {
-      const imgH = img.offsetHeight;
-      if (!imgH) return;
-      FLOORS.forEach(function (f, i) {
-        const overlay = document.getElementById('floorOverlay' + i);
-        if (!overlay) return;
-        overlay.style.top    = (f.top / 100 * imgH) + 'px';
-        overlay.style.height = (f.h   / 100 * imgH) + 'px';
-      });
-    }
-
-    function activateFloor(i) {
-      // First dim all floors
-      FLOORS.forEach(function (_, j) {
-        const ov = document.getElementById('floorOverlay' + j);
-        const lb = document.getElementById('floorLabel' + j);
-        if (ov) ov.classList.remove('active');
-        if (lb) lb.classList.remove('visible');
-      });
-
-      if (i >= FLOORS.length) {
-        // All floors done — light everything up
-        FLOORS.forEach(function (_, j) {
-          const ov = document.getElementById('floorOverlay' + j);
-          if (ov) ov.classList.add('active');
-        });
-        scrollCue.classList.add('visible');
-        enableScrollAway();
-        return;
-      }
-
-      const overlay = document.getElementById('floorOverlay' + i);
-      const label   = document.getElementById('floorLabel' + i);
-      if (overlay) overlay.classList.add('active');
-      setTimeout(function () {
-        if (label) label.classList.add('visible');
-      }, FADE_MS / 2);
-
-      setTimeout(function () { activateFloor(i + 1); }, HOLD_MS);
-    }
-
-    function enableScrollAway() {
-      document.body.style.overflow = '';
-      var dismissed = false;
-      function dismiss() {
-        if (dismissed) return;
-        dismissed = true;
-        window.removeEventListener('wheel',     dismiss);
-        window.removeEventListener('touchmove', dismiss);
-        hero.style.transition = 'opacity 0.7s ease';
-        hero.style.opacity    = '0';
-        setTimeout(function () {
-          hero.style.display = 'none';
-        }, 750);
-      }
-      window.addEventListener('wheel',     dismiss, { passive: true });
-      window.addEventListener('touchmove', dismiss, { passive: true });
-    }
-
-    function runAnimation() {
-      positionOverlays();
-      // Lock scroll during animation
-      document.body.style.overflow = 'hidden';
-      // Small delay so page paint settles
-      setTimeout(function () { activateFloor(0); }, 600);
-    }
-
-    // Start when image is loaded
-    if (img.complete && img.naturalHeight > 0) {
-      runAnimation();
-    } else {
-      img.addEventListener('load', runAnimation);
-    }
-
-    // Re-position overlays on resize
-    window.addEventListener('resize', positionOverlays);
-  })();
 
   /* ── Active nav floor highlight ── */
   (function () {
@@ -2230,42 +2041,10 @@
     });
   })();
 
+  /* ── Nav: always visible ── */
   (function () {
-    var nav       = document.getElementById('nav');
-    var hotelHero = document.getElementById('hotelHero');
-    // Snapshot the hotel hero height once (static layout, updates on resize).
-    // We capture it after fonts/images settle; use innerHeight as fallback.
-    var hotelH    = hotelHero ? hotelHero.offsetHeight : window.innerHeight;
-    var last      = window.scrollY;
-    var ticking   = false;
-
-    // Hide nav on initial load — hotel hero is showing
-    nav.classList.add('hidden');
-
-    // Re-snapshot on resize so threshold stays accurate
-    window.addEventListener('resize', function () {
-      if (hotelHero && hotelHero.offsetHeight > 0) {
-        hotelH = hotelHero.offsetHeight;
-      }
-    });
-
-    window.addEventListener('scroll', function () {
-      if (!ticking) {
-        requestAnimationFrame(function () {
-          var y = window.scrollY;
-          if (y < hotelH) {
-            nav.classList.add('hidden');
-          } else if (y > last) {
-            nav.classList.add('hidden');
-          } else {
-            nav.classList.remove('hidden');
-          }
-          last = y;
-          ticking = false;
-        });
-        ticking = true;
-      }
-    });
+    var nav = document.getElementById('nav');
+    if (nav) nav.classList.remove('hidden');
   })();
 
   (function () {
