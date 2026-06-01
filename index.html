@@ -95,6 +95,12 @@
     transition: color 200ms;
   }
   nav.index ul a:hover { color: var(--red); }
+  nav.index ul a[data-floor].floor-active { font-weight: 600; }
+  nav.index ul a[data-floor="1"].floor-active { color: #C88080; }
+  nav.index ul a[data-floor="2"].floor-active { color: #CC2200; }
+  nav.index ul a[data-floor="3"].floor-active { color: #E03030; }
+  nav.index ul a[data-floor="4"].floor-active { color: #8B1010; }
+  nav.index ul a[data-floor="5"].floor-active { color: #5C001A; }
   nav.index ul a .roman {
     color: var(--red);
     margin-right: 6px;
@@ -1589,12 +1595,11 @@
   <div class="row">
     <div class="mark"></div>
     <ul>
-      <li><a href="#origins"><span class="roman">I</span>Creative Tech</a></li>
-      <li><a href="#productExpand"><span class="roman">II</span>Product</a></li>
-      <li><a href="#labExpand"><span class="roman">III</span>The Lab</a></li>
-      <li><a href="#energyExpand"><span class="roman">IV</span>Energy</a></li>
-      <li><a href="#certsExpand"><span class="roman">V</span>Certs</a></li>
-      <li><a href="#contact"><span class="roman">VI</span>Contact</a></li>
+      <li><a href="#about"              data-floor="1"><span class="roman">I</span>About</a></li>
+      <li><a href="#product-experiment" data-floor="2"><span class="roman">II</span>Product</a></li>
+      <li><a href="#lab"                data-floor="3"><span class="roman">III</span>AI Lab</a></li>
+      <li><a href="#energy"             data-floor="4"><span class="roman">IV</span>Energy</a></li>
+      <li><a href="#certs"              data-floor="5"><span class="roman">V</span>Credentials</a></li>
     </ul>
   </div>
 </nav>
@@ -2173,6 +2178,38 @@
 
     // Re-position overlays on resize
     window.addEventListener('resize', positionOverlays);
+  })();
+
+  /* ── Active nav floor highlight ── */
+  (function () {
+    var sections = [
+      { id: 'about',              floor: 1 },
+      { id: 'product-experiment', floor: 2 },
+      { id: 'lab',                floor: 3 },
+      { id: 'energy',             floor: 4 },
+      { id: 'certs',              floor: 5 },
+    ];
+    var links = Array.from(document.querySelectorAll('nav.index ul a[data-floor]'));
+
+    function setActive(floorNum) {
+      links.forEach(function (a) {
+        a.classList.toggle('floor-active', parseInt(a.dataset.floor) === floorNum);
+      });
+    }
+
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) {
+          var sec = sections.find(function (s) { return s.id === e.target.id; });
+          if (sec) setActive(sec.floor);
+        }
+      });
+    }, { threshold: 0.3 });
+
+    sections.forEach(function (s) {
+      var el = document.getElementById(s.id);
+      if (el) io.observe(el);
+    });
   })();
 
   (function () {
