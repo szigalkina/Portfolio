@@ -2231,25 +2231,33 @@
   })();
 
   (function () {
-    var nav = document.getElementById('nav');
-    var last = window.scrollY;
-    var ticking = false;
-    // Hide nav on initial load (hotel hero is showing)
+    var nav       = document.getElementById('nav');
+    var hotelHero = document.getElementById('hotelHero');
+    // Snapshot the hotel hero height once (static layout, updates on resize).
+    // We capture it after fonts/images settle; use innerHeight as fallback.
+    var hotelH    = hotelHero ? hotelHero.offsetHeight : window.innerHeight;
+    var last      = window.scrollY;
+    var ticking   = false;
+
+    // Hide nav on initial load — hotel hero is showing
     nav.classList.add('hidden');
+
+    // Re-snapshot on resize so threshold stays accurate
+    window.addEventListener('resize', function () {
+      if (hotelHero && hotelHero.offsetHeight > 0) {
+        hotelH = hotelHero.offsetHeight;
+      }
+    });
+
     window.addEventListener('scroll', function () {
       if (!ticking) {
         requestAnimationFrame(function () {
           var y = window.scrollY;
-          var hotelHero = document.getElementById('hotelHero');
-          var hotelH = hotelHero ? hotelHero.offsetHeight : window.innerHeight;
           if (y < hotelH) {
-            // Still in/near hotel hero — keep nav hidden
             nav.classList.add('hidden');
           } else if (y > last) {
-            // Scrolling down past hotel — hide nav
             nav.classList.add('hidden');
           } else {
-            // Scrolling up past hotel — show nav
             nav.classList.remove('hidden');
           }
           last = y;
