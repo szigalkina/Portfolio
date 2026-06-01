@@ -47,10 +47,10 @@
     position: fixed;
     top: 0; left: 0; right: 0;
     z-index: 100;
-    background: rgba(181, 201, 176, 0.85);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    border-bottom: 1px solid var(--hair);
+    background: rgba(30, 16, 12, 0.88);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    border-bottom: 1px solid rgba(184, 58, 44, 0.35);
     transition: transform 400ms ease;
   }
   nav.index.hidden { transform: translateY(-100%); }
@@ -69,7 +69,7 @@
     font-size: 16px;
     letter-spacing: 0.18em;
     text-transform: uppercase;
-    color: #3B6887;
+    color: var(--ivory);
     display: flex;
     align-items: center;
     gap: 12px;
@@ -89,20 +89,15 @@
     font-size: 10px;
     letter-spacing: 0.28em;
     text-transform: uppercase;
-    color: var(--ink);
+    color: rgba(244, 236, 218, 0.78);
     text-decoration: none;
     font-weight: 400;
     transition: color 200ms;
   }
-  nav.index ul a:hover { color: var(--red); }
-  nav.index ul a[data-floor].floor-active { font-weight: 600; }
-  nav.index ul a[data-floor="1"].floor-active { color: #C88080; }
-  nav.index ul a[data-floor="2"].floor-active { color: #CC2200; }
-  nav.index ul a[data-floor="3"].floor-active { color: #E03030; }
-  nav.index ul a[data-floor="4"].floor-active { color: #8B1010; }
-  nav.index ul a[data-floor="5"].floor-active { color: #5C001A; }
+  nav.index ul a:hover { color: var(--ivory); }
+  nav.index ul a[data-floor].floor-active { font-weight: 600; color: var(--ivory); }
   nav.index ul a .roman {
-    color: var(--red);
+    color: #E8705A;
     margin-right: 6px;
     font-family: var(--f-accent);
     font-style: italic;
@@ -230,43 +225,49 @@
   .hotel-hero {
     position: relative;
     width: 100%;
-    min-height: 100vh;
+    height: 100vh;
+    overflow: hidden;
     background: var(--ivory);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 80px 32px 60px;
   }
   .hotel-hero .hotel-img-wrap {
-    position: relative;
-    width: clamp(280px, 60vw, 780px);
-    user-select: none;
+    position: absolute;
+    inset: 0;
   }
   .hotel-hero .hotel-img-wrap img {
     width: 100%;
-    height: auto;
+    height: 100%;
+    object-fit: cover;
+    object-position: center center;
     display: block;
+    user-select: none;
+    -webkit-user-drag: none;
   }
-  .hotel-hero .hotel-tagline {
-    margin-top: 40px;
-    text-align: center;
-    letter-spacing: 0.38em;
-    font-size: 10px;
-    text-transform: uppercase;
-    color: var(--ink-soft);
-    font-family: var(--f-display);
-    font-weight: 400;
+  /* ── Arch marquee sign overlay ── */
+  .hotel-arch-wrap {
+    position: absolute;
+    left: 50%;
+    top: 56%;
+    transform: translate(-50%, -50%);
+    width: clamp(300px, 40vw, 600px);
+    z-index: 5;
+    pointer-events: none;
   }
-  .hotel-hero .hotel-tagline em {
-    font-family: var(--f-accent);
-    font-style: italic;
-    font-size: 14px;
-    letter-spacing: 0.06em;
-    text-transform: none;
-    color: var(--red);
-    display: block;
-    margin-top: 6px;
+  .hotel-arch-svg {
+    width: 100%;
+    overflow: visible;
+    filter: drop-shadow(0 2px 12px rgba(0, 0, 0, 0.65));
+  }
+  .hotel-arch-svg .arch-text {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 21px;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    fill: var(--ivory);
+  }
+  .hotel-arch-svg .arch-rule {
+    fill: none;
+    stroke: rgba(244, 236, 218, 0.55);
+    stroke-width: 1.2;
   }
 
   /* ────────────── SECTION-SPECIFIC PALETTES ────────────── */
@@ -1007,7 +1008,8 @@
   }
 
   @media (max-width: 640px) {
-    .hotel-hero .hotel-img-wrap { width: clamp(260px, 88vw, 500px); }
+    .hotel-arch-wrap { width: clamp(240px, 80vw, 400px); }
+    .hotel-arch-svg .arch-text { font-size: 15px; }
   }
 
   /* ────────────── ROTATING WORD ────────────── */
@@ -1576,9 +1578,25 @@
   <div class="hotel-img-wrap">
     <img src="assets/hotel-red.png" alt="Portfolio Hotel — Svetlana de Boer" draggable="false">
   </div>
-  <div class="hotel-tagline">
-    Portfolio · Svetlana Zigalkina de Boer
-    <em>Builder. Technologist. Facilitator.</em>
+
+  <!-- Grand Budapest–style arch marquee sign -->
+  <div class="hotel-arch-wrap" aria-label="Portfolio · Svetlana de Boer">
+    <svg viewBox="0 0 500 190" class="hotel-arch-svg" aria-hidden="true">
+      <defs>
+        <!-- The arc path text follows: a gentle upward curve centred at 500×190 -->
+        <path id="hotelArchPath" d="M 45 172 A 208 208 0 0 1 455 172"/>
+      </defs>
+      <!-- Outer decorative rule -->
+      <path class="arch-rule" d="M 28 172 A 225 225 0 0 1 472 172"/>
+      <!-- Inner decorative rule -->
+      <path class="arch-rule" style="opacity:0.35" d="M 68 172 A 185 185 0 0 1 432 172"/>
+      <!-- Text follows the arch -->
+      <text>
+        <textPath href="#hotelArchPath" startOffset="50%" text-anchor="middle" class="arch-text">
+          PORTFOLIO · SVETLANA DE BOER
+        </textPath>
+      </text>
+    </svg>
   </div>
 </section>
 
