@@ -227,55 +227,33 @@
     height: 100vh;
     background: var(--ivory);
     display: flex;
-    flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding-top: 64px; /* clear fixed nav */
-    gap: 0;
+    padding-top: 64px;
     overflow: hidden;
   }
-  /* ── Arch marquee sign — sits ABOVE the hotel image ── */
-  .hotel-arch-wrap {
-    flex-shrink: 0;
-    width: clamp(260px, 36vw, 520px);
-    margin-bottom: -2vh; /* tucks slightly over the roofline */
-    z-index: 2;
+  /* Stacked image slideshow — mouse Y activates the matching floor */
+  .hotel-slideshow {
+    position: relative;
+    width: clamp(500px, 86vw, 1140px);
+    aspect-ratio: 16 / 9;
+    cursor: default;
   }
-  .hotel-arch-svg {
+  .hotel-frame {
+    position: absolute;
+    inset: 0;
     width: 100%;
-    overflow: visible;
-    filter: drop-shadow(0 1px 6px rgba(42, 38, 32, 0.45));
-  }
-  .hotel-arch-svg .arch-text {
-    font-family: 'Playfair Display', Georgia, serif;
-    font-size: 20px;
-    font-weight: 700;
-    letter-spacing: 0.22em;
-    fill: var(--ink);
-  }
-  .hotel-arch-svg .arch-rule {
-    fill: none;
-    stroke: var(--red);
-    stroke-width: 1.2;
-    opacity: 0.55;
-  }
-  .hotel-hero .hotel-img-wrap {
-    flex-shrink: 1;
-    display: flex;
-    align-items: flex-start;
-    justify-content: center;
-    max-height: calc(100vh - 160px);
-    width: 100%;
-  }
-  .hotel-hero .hotel-img-wrap img {
-    max-height: calc(100vh - 160px);
-    max-width: clamp(420px, 72vw, 1000px);
-    width: auto;
-    height: auto;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
     display: block;
+    opacity: 0;
+    transition: opacity 0.28s ease;
     user-select: none;
     -webkit-user-drag: none;
+    pointer-events: none;
   }
+  .hotel-frame.active { opacity: 1; }
 
   /* ────────────── SECTION-SPECIFIC PALETTES ────────────── */
   section#about        { background: var(--ivory); }
@@ -1015,9 +993,7 @@
   }
 
   @media (max-width: 640px) {
-    .hotel-arch-wrap { width: clamp(220px, 88vw, 360px); }
-    .hotel-arch-svg .arch-text { font-size: 14px; }
-    .hotel-hero .hotel-img-wrap img { max-width: 95vw; }
+    .hotel-slideshow { width: 98vw; }
   }
 
   /* ────────────── ROTATING WORD ────────────── */
@@ -1583,31 +1559,16 @@
 
 <!-- ═════════════════════ HOTEL HERO ═════════════════════ -->
 <section class="hotel-hero" id="hotelHero">
-
-  <!-- Grand Budapest–style arch marquee — DOM order puts it ABOVE the hotel image -->
-  <div class="hotel-arch-wrap" aria-label="Portfolio · Svetlana de Boer">
-    <svg viewBox="0 0 500 160" class="hotel-arch-svg" aria-hidden="true">
-      <defs>
-        <!-- Arc curves upward in the middle — like a real marquee sign above an entrance -->
-        <path id="hotelArchPath" d="M 30 140 A 240 240 0 0 1 470 140"/>
-      </defs>
-      <!-- Outer decorative rule -->
-      <path class="arch-rule" d="M 14 140 A 256 256 0 0 1 486 140"/>
-      <!-- Inner decorative rule -->
-      <path class="arch-rule" style="opacity:0.4" d="M 55 140 A 218 218 0 0 1 445 140"/>
-      <!-- Text follows the arch curve -->
-      <text>
-        <textPath href="#hotelArchPath" startOffset="50%" text-anchor="middle" class="arch-text">
-          PORTFOLIO · SVETLANA DE BOER
-        </textPath>
-      </text>
-    </svg>
+  <div class="hotel-slideshow" id="hotelSlideshow" role="img" aria-label="Portfolio Hotel — hover over a floor to explore">
+    <!-- Frame 0: default — all floors pale -->
+    <img class="hotel-frame active" src="assets/hotel-0-pale.jpg" alt="Portfolio · Svetlana de Boer" draggable="false">
+    <!-- Frames 1–5: one floor vivid, rest pale -->
+    <img class="hotel-frame" src="assets/hotel-1-about.jpg"   alt="I · About"                draggable="false">
+    <img class="hotel-frame" src="assets/hotel-2-product.jpg" alt="II · Product Management"  draggable="false">
+    <img class="hotel-frame" src="assets/hotel-3-lab.jpg"     alt="III · AI Lab"             draggable="false">
+    <img class="hotel-frame" src="assets/hotel-4-energy.jpg"  alt="IV · Energy Transition"   draggable="false">
+    <img class="hotel-frame" src="assets/hotel-5-certs.jpg"   alt="V · Credentials"          draggable="false">
   </div>
-
-  <div class="hotel-img-wrap">
-    <img src="assets/hotel-red.png" alt="Portfolio Hotel — Svetlana de Boer" draggable="false">
-  </div>
-
 </section>
 
 <!-- ═════════════════════ I — THE CREATIVE TECHNOLOGIST ═════════════════════ -->
@@ -2036,6 +1997,52 @@
 </footer>
 
 <script>
+
+  /* ── Hotel: mouse-driven floor reveal ── */
+  (function () {
+    var slideshow = document.getElementById('hotelSlideshow');
+    var frames    = Array.from(document.querySelectorAll('.hotel-frame'));
+    if (!slideshow || !frames.length) return;
+
+    // Top boundary of each floor as a fraction of image height
+    // Calibrated against the hotel illustration (roof = 0–14%, then 5 floors)
+    var TOPS = [0.14, 0.30, 0.47, 0.60, 0.74, 0.90];
+
+    var sections = ['', 'about', 'product-experiment', 'lab', 'energy', 'certs'];
+    var active = 0;
+
+    function showFloor(n) {
+      if (n === active) return;
+      active = n;
+      frames.forEach(function (f, i) { f.classList.toggle('active', i === n); });
+      slideshow.style.cursor = (n > 0) ? 'pointer' : 'default';
+    }
+
+    function floorAt(relY) {
+      if (relY < TOPS[0] || relY > TOPS[5]) return 0; // roof / ground
+      for (var i = TOPS.length - 1; i >= 0; i--) {
+        if (relY >= TOPS[i]) return i + 1;
+      }
+      return 0;
+    }
+
+    slideshow.addEventListener('mousemove', function (e) {
+      var r = slideshow.getBoundingClientRect();
+      showFloor(floorAt((e.clientY - r.top) / r.height));
+    });
+
+    slideshow.addEventListener('mouseleave', function () { showFloor(0); });
+
+    // Click a floor → smooth-scroll to that section
+    slideshow.addEventListener('click', function (e) {
+      var r = slideshow.getBoundingClientRect();
+      var floor = floorAt((e.clientY - r.top) / r.height);
+      if (floor > 0 && sections[floor]) {
+        var el = document.getElementById(sections[floor]);
+        if (el) el.scrollIntoView({ behavior: 'smooth' });
+      }
+    });
+  })();
 
   /* ── Active nav floor highlight ── */
   (function () {
