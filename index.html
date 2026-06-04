@@ -6,7 +6,7 @@
 <title>Svetlana Zigalkina de Boer — Builder. Designer. Facilitator.</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Jost:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Roboto+Slab:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Italianno&family=Jost:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Roboto+Slab:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root {
     --sage:        #B5C9B0;
@@ -96,6 +96,8 @@
   }
   nav.index ul a:hover { color: var(--ivory); }
   nav.index ul a[data-floor].floor-active { font-weight: 600; color: var(--ivory); }
+  nav.index ul a.nav-home { color: #E8705A; }
+  nav.index ul a.nav-home:hover { color: var(--ivory); }
   nav.index ul a .roman {
     color: #E8705A;
     margin-right: 6px;
@@ -143,7 +145,7 @@
     letter-spacing: 0.32em;
     text-transform: uppercase;
     line-height: 1.05;
-    margin-bottom: 18px;
+    margin-bottom: 10px;
   }
   .title-card .subtitle {
     font-family: var(--f-accent);
@@ -223,40 +225,60 @@
 
   /* ────────────── HOTEL HERO ────────────── */
   .hotel-hero {
+    position: relative;
     width: 100%;
     height: 100vh;
-    background: var(--ivory);
+    background: #f3ebd4;
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
     padding-top: 64px;
     overflow: hidden;
+    gap: 0;
   }
   /* Stacked image slideshow — mouse Y activates the matching floor */
   .hotel-slideshow {
     position: relative;
-    width: clamp(500px, 86vw, 1140px);
-    aspect-ratio: 16 / 9;
+    width: clamp(320px, 54vw, 820px);
     cursor: default;
   }
+  /* ALL frames share the same stacking behaviour */
   .hotel-frame {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: center;
     display: block;
+    width: 100%;
+    height: auto;
     opacity: 0;
     transition: opacity 0.28s ease;
     user-select: none;
     -webkit-user-drag: none;
     pointer-events: none;
   }
+  /* First frame stays in normal flow → establishes the container height */
+  .hotel-frame:first-child {
+    position: relative;
+  }
+  /* Frames 2–6 stack exactly on top of frame 1 */
+  .hotel-frame:not(:first-child) {
+    position: absolute;
+    top: 0; left: 0;
+    height: 100%;
+    object-fit: cover;
+  }
   .hotel-frame.active { opacity: 1; }
 
+  /* Arched portfolio title above hotel image */
+  .hotel-arch-text {
+    width: clamp(280px, 50vw, 740px);
+    height: auto;
+    flex-shrink: 0;
+    display: block;
+    pointer-events: none;
+    margin-bottom: -8vh;
+  }
+
   /* ────────────── SECTION-SPECIFIC PALETTES ────────────── */
-  section#about        { background: var(--ivory); }
+  section#about        { background: var(--sage-soft); }
   .about-intro {
     display: grid;
     grid-template-columns: 220px 1fr;
@@ -275,19 +297,24 @@
   .about-text { display: flex; flex-direction: column; gap: 20px; }
   .tech-skills-header {
     font-family: var(--f-display);
-    font-size: 10px;
-    font-weight: 700;
-    letter-spacing: 0.45em;
+    font-size: clamp(16px, 1.8vw, 22px);
+    font-weight: 300;
+    letter-spacing: 0.28em;
     text-transform: uppercase;
-    color: var(--ink-soft);
-    margin: 32px 0 0;
+    color: var(--ink);
+    margin: 52px 0 20px;
     display: block;
+    text-align: center;
   }
   @media (max-width: 700px) {
     .about-intro { grid-template-columns: 1fr; }
     .about-photo { max-width: 200px; }
   }
   section#product      { background: var(--ivory); }
+  /* Product opener matches the About section (sage-soft) */
+  #productExpand                          { background: var(--sage-soft); }
+  #productExpand .placeholder--bg         { background: var(--sage-soft); }
+  #productExpand .expand-veil             { background: transparent; }
   section#lab          { background: var(--red); color: var(--ivory); }
   section#energy       { background: var(--sage-deep); color: var(--ivory); }
   section#certs        { background: var(--pink); }
@@ -362,6 +389,7 @@
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 0;
+    max-width: 680px;
     margin: 48px auto 0;
     border-top: 1px solid var(--hair);
     border-bottom: 1px solid var(--hair);
@@ -645,7 +673,7 @@
 
   .lab-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(2, 1fr);
     gap: 2px;
     background: var(--frame);
     border: 1px solid var(--frame);
@@ -701,6 +729,7 @@
   .status.building { color: var(--red); border-color: var(--red); }
   .status.live { color: var(--sage-deep); border-color: var(--sage-deep); background: var(--sage-soft); }
   .status.idea { color: var(--ink-soft); }
+  .status.coming-soon { color: var(--gold); border-color: var(--gold); }
 
   .contact-lines {
     margin-top: 18px;
@@ -999,7 +1028,7 @@
   /* ────────────── ROTATING WORD ────────────── */
   .po-stamp {
     font-family: var(--f-display);
-    font-size: 11px;
+    font-size: 22px;
     font-weight: 700;
     letter-spacing: 0.45em;
     text-transform: uppercase;
@@ -1296,41 +1325,60 @@
     }
   }
   /* ────────────── PRODUCT · EXPERIMENT — SCROLL-DRIVEN GRID REVEAL ──────────────
-     Six proofs duplicated as a fixed 3×2 grid. A tall outer .exp-stage gives
-     scroll runway; .exp-sticky pins to the viewport while a JS listener maps
-     scroll progress to a 12-step reveal (block colour first × 6, then text × 6).
-     Reversible — scrolling back removes the .is-visible / .text-visible flags. */
+     Six case studies in a click-through carousel. One card at a time,
+     full width, navigated with Prev / Next buttons. */
   section#product-experiment {
     background: var(--ivory);
-    padding: 0;
-    min-height: 0;
+    padding: 80px 32px 100px;
     position: relative;
   }
-  .exp-stage {
-    position: relative;
-    /* 6 reveal events × ~70vh runway each (shorter now that text rides
-       with the block instead of as a second pass) */
-    height: 420vh;
-  }
-  .exp-sticky {
-    position: sticky;
-    top: 0;
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    overflow: hidden;
-    padding: 5vh 32px;
-    box-sizing: border-box;
-  }
-  .exp-sticky > .chapter-inner {
-    max-width: 1280px;
-    width: 100%;
+  section#product-experiment .chapter-inner {
+    max-width: 960px;
     margin: 0 auto;
+  }
+  /* Carousel — clips the track, showing ~2.3 cards at once */
+  .case-carousel {
+    margin-top: 40px;
+    overflow: hidden;
+    position: relative;
+  }
+  /* Sliding track — all cards sit in a horizontal row */
+  .case-track {
     display: flex;
-    flex-direction: column;
-    gap: 24px;
-    max-height: 100%;
+    gap: 20px;
+    transition: transform 0.42s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    will-change: transform;
+  }
+  /* Navigation row */
+  .case-nav {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 40px;
+    margin-top: 32px;
+  }
+  .case-btn {
+    background: none;
+    border: 1px solid var(--ink);
+    color: var(--ink);
+    font-family: var(--f-display);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    padding: 11px 28px;
+    cursor: pointer;
+    transition: background 0.2s ease, color 0.2s ease;
+  }
+  .case-btn:hover { background: var(--ink); color: var(--ivory); }
+  .case-btn:disabled { opacity: 0.3; cursor: default; }
+  .case-counter {
+    font-family: var(--f-accent);
+    font-style: italic;
+    font-size: 20px;
+    color: var(--ink-soft);
+    min-width: 70px;
+    text-align: center;
   }
   .exp-title-card {
     text-align: center;
@@ -1356,51 +1404,34 @@
   .exp-title-card .subtitle {
     font-family: var(--f-accent);
     font-style: italic;
-    font-size: 14px;
+    font-size: 20px;
     color: var(--ink-soft);
     letter-spacing: 0.04em;
     max-width: 620px;
     margin: 0 auto;
   }
 
-  .exp-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    grid-template-rows: repeat(2, 1fr);
-    gap: 16px;
-    height: 54vh;
-    max-height: 580px;
-    min-height: 360px;
-  }
+  /* Cards always in flow — width creates the 2-full + peek effect */
   .exp-card {
-    position: relative;
-    padding: 18px 20px 16px;
     display: flex;
+    flex: 0 0 calc(43% - 10px);
+    position: relative;
+    padding: 24px 26px 22px;
     flex-direction: column;
     justify-content: flex-start;
     overflow: hidden;
     border: 1px solid var(--red-deeper);
-    opacity: 0;
-    transform: translateY(22px) scale(0.97);
-    transition: opacity 520ms cubic-bezier(.2,.7,.2,1),
-                transform 620ms cubic-bezier(.2,.7,.2,1);
-    will-change: opacity, transform;
+    min-height: 46vh;
   }
-  .exp-card.is-visible {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
-  /* Inner double-line ornamental frame, matches the gallery cards */
+  /* Inner double-line ornamental frame */
   .exp-card::after {
     content: "";
     position: absolute;
     inset: 8px;
     border: 1px solid currentColor;
-    opacity: 0;
-    transition: opacity 480ms ease 80ms;
+    opacity: 0.22;
     pointer-events: none;
   }
-  .exp-card.is-visible::after { opacity: 0.22; }
 
   .exp-card .exp-content {
     position: relative;
@@ -1408,15 +1439,6 @@
     display: flex;
     flex-direction: column;
     gap: 6px;
-    opacity: 0;
-    transform: translateY(8px);
-    /* Text appears together with the block — small stagger via delay only. */
-    transition: opacity 520ms ease 140ms,
-                transform 560ms cubic-bezier(.2,.7,.2,1) 140ms;
-  }
-  .exp-card.is-visible .exp-content {
-    opacity: 1;
-    transform: translateY(0);
   }
   .exp-content .exp-top {
     display: flex;
@@ -1465,54 +1487,44 @@
     margin: 2px 0 0;
     opacity: 0.94;
   }
+  .exp-outcome {
+    font-family: var(--f-display);
+    font-size: clamp(10px, 0.75vw, 11.5px);
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    margin: 10px 0 0;
+    padding-top: 10px;
+    border-top: 1px solid currentColor;
+    opacity: 0.8;
+    display: block;
+  }
 
   /* Tonal surfaces — reuses the gallery palette and adds a softer
      terracotta-red (—red-soft) for visual rhythm across the six cards. */
   :root { --red-soft: #D96A55; }   /* dusty Wes-Anderson terracotta */
-  .exp-card.tone-red    { background: var(--red-bold);   color: var(--ivory); border-color: var(--red-deeper); }
-  .exp-card.tone-ivory  { background: var(--ivory-warm); color: var(--ink);   border-color: rgba(42,38,32,0.15); }
-  .exp-card.tone-deep   { background: var(--red-deeper); color: var(--ivory); border-color: #5A1109; }
-  .exp-card.tone-coral  { background: var(--red-soft);   color: var(--ivory); border-color: #A8412F; }
+  /* Grand Budapest Hotel palette — crimson, blush, red, salmon, burgundy, pale */
+  .exp-card.tone-red    { background: #A31830; color: var(--ivory); border-color: #7C1020; }
+  .exp-card.tone-ivory  { background: #F0CBBA; color: var(--ink);   border-color: rgba(120,20,30,0.2); }
+  .exp-card.tone-deep   { background: #C42040; color: var(--ivory); border-color: #9C1428; }
+  .exp-card.tone-rose   { background: #E8B0A0; color: var(--ink);   border-color: rgba(120,20,30,0.18); }
+  .exp-card.tone-coral  { background: #781020; color: var(--ivory); border-color: #540A14; }
+  .exp-card.tone-powder { background: #F8E5DC; color: var(--ink);   border-color: rgba(120,20,30,0.12); }
+  /* Accent colours for light-background cards */
   .exp-card.tone-ivory .exp-tag,
-  .exp-card.tone-ivory .exp-num { color: var(--red-bold); }
-  .exp-card.tone-ivory p { color: var(--ink-soft); }
+  .exp-card.tone-ivory .exp-num,
+  .exp-card.tone-rose .exp-tag,
+  .exp-card.tone-rose .exp-num,
+  .exp-card.tone-powder .exp-tag,
+  .exp-card.tone-powder .exp-num { color: #7A3048; }
+  .exp-card.tone-ivory p,
+  .exp-card.tone-rose p   { color: var(--ink); }
+  .exp-card.tone-ivory .exp-tag,
+  .exp-card.tone-rose .exp-tag { color: #1E0008; border-color: rgba(74, 10, 26, 0.35); }
+  .exp-card.tone-powder p { color: var(--ink-soft); }
 
   /* Scroll-progress strip — gives the user a sense of where they are in
      the 12-step reveal. */
-  .exp-progress {
-    display: flex;
-    align-items: center;
-    gap: 18px;
-    margin-top: 6px;
-    font-family: var(--f-accent);
-    font-style: italic;
-    font-size: 10px;
-    letter-spacing: 0.3em;
-    text-transform: uppercase;
-    color: var(--ink-soft);
-  }
-  .exp-progress-track {
-    flex: 1;
-    height: 1px;
-    background: rgba(42, 38, 32, 0.18);
-    position: relative;
-    overflow: hidden;
-  }
-  .exp-progress-fill {
-    position: absolute;
-    inset: 0 auto 0 0;
-    width: 0%;
-    background: var(--red-bold);
-    transition: width 180ms ease;
-  }
-  .exp-progress-step {
-    min-width: 64px;
-    text-align: right;
-    color: var(--red-bold);
-    font-style: normal;
-    font-family: var(--f-display);
-    letter-spacing: 0.18em;
-  }
 
   @media (max-width: 1024px) {
     .exp-grid { gap: 12px; height: 56vh; }
@@ -1529,15 +1541,8 @@
     }
   }
   @media (max-width: 480px) {
-    .exp-grid {
-      grid-template-columns: 1fr;
-      grid-template-rows: repeat(6, 1fr);
-      height: 76vh;
-      max-height: none;
-    }
-    .exp-card { padding: 14px 14px 16px; }
+    .exp-card { flex: 0 0 85%; padding: 16px 18px; min-height: 38vh; }
     .exp-content h4 { font-size: 14px; }
-    .exp-content p  { display: none; }
   }
 </style>
 </head>
@@ -1548,54 +1553,80 @@
   <div class="row">
     <div class="mark"></div>
     <ul>
-      <li><a href="#about"              data-floor="1"><span class="roman">I</span>About</a></li>
-      <li><a href="#product-experiment" data-floor="2"><span class="roman">II</span>Product</a></li>
-      <li><a href="#lab"                data-floor="3"><span class="roman">III</span>AI Lab</a></li>
-      <li><a href="#energy"             data-floor="4"><span class="roman">IV</span>Energy</a></li>
-      <li><a href="#certs"              data-floor="5"><span class="roman">V</span>Credentials</a></li>
+      <li><a href="#hotelHero" class="nav-home" aria-label="Back to top">Welcome</a></li>
+      <li><a href="#about"         data-floor="1"><span class="roman">I</span>About</a></li>
+      <li><a href="#productExpand" data-floor="2"><span class="roman">II</span>Product</a></li>
+      <li><a href="#labExpand"     data-floor="3"><span class="roman">III</span>AI Lab</a></li>
+      <li><a href="#energy"        data-floor="4"><span class="roman">IV</span>Energy</a></li>
+      <li><a href="#certsExpand"   data-floor="5"><span class="roman">V</span>Credentials</a></li>
     </ul>
   </div>
 </nav>
 
 <!-- ═════════════════════ HOTEL HERO ═════════════════════ -->
 <section class="hotel-hero" id="hotelHero">
+
+  <!-- Arched portfolio title -->
+  <svg class="hotel-arch-text" viewBox="0 0 800 230" preserveAspectRatio="xMidYMid meet"
+       xmlns="http://www.w3.org/2000/svg" aria-label="Portfolio — Svetlana de Boer">
+    <defs>
+      <!-- Peak of PORTFOLIO arc = y≈83, cap-height ~40px → top of letters at y≈43, safe -->
+      <path id="arc-portfolio" d="M 35,218 A 560,560 0 0,1 765,218"/>
+      <!-- Peak of name arc = y≈121 -->
+      <path id="arc-name"      d="M 108,224 A 464,464 0 0,1 692,224"/>
+    </defs>
+    <text font-family="'Playfair Display', Georgia, serif" font-weight="700"
+          font-size="58" fill="#2A2620" letter-spacing="12">
+      <textPath href="#arc-portfolio" startOffset="50%" text-anchor="middle">PORTFOLIO</textPath>
+    </text>
+    <text font-family="'Playfair Display', Georgia, serif" font-weight="400"
+          font-style="italic" font-size="21" fill="#5C544A" letter-spacing="4">
+      <textPath href="#arc-name" startOffset="50%" text-anchor="middle">Svetlana de Boer</textPath>
+    </text>
+  </svg>
+
   <div class="hotel-slideshow" id="hotelSlideshow" role="img" aria-label="Portfolio Hotel — hover over a floor to explore">
-    <!-- Frame 0: default — all floors pale -->
-    <img class="hotel-frame active" src="assets/hotel-0-pale.jpg" alt="Portfolio · Svetlana de Boer" draggable="false">
-    <!-- Frames 1–5: one floor vivid, rest pale -->
-    <img class="hotel-frame" src="assets/hotel-1-about.jpg"   alt="I · About"                draggable="false">
-    <img class="hotel-frame" src="assets/hotel-2-product.jpg" alt="II · Product Management"  draggable="false">
-    <img class="hotel-frame" src="assets/hotel-3-lab.jpg"     alt="III · AI Lab"             draggable="false">
-    <img class="hotel-frame" src="assets/hotel-4-energy.jpg"  alt="IV · Energy Transition"   draggable="false">
-    <img class="hotel-frame" src="assets/hotel-5-certs.jpg"   alt="V · Credentials"          draggable="false">
+    <img class="hotel-frame active" src="assets/hotel-0-pale-v2.jpg" alt="Portfolio · Svetlana de Boer" draggable="false">
+    <img class="hotel-frame" src="assets/hotel-1-about-v2.jpg"   alt="I · About"                draggable="false">
+    <img class="hotel-frame" src="assets/hotel-2-product-v2.jpg" alt="II · Product Management"  draggable="false">
+    <img class="hotel-frame" src="assets/hotel-3-lab-v2.jpg"     alt="III · AI Lab"             draggable="false">
+    <img class="hotel-frame" src="assets/hotel-4-energy-v2.jpg"  alt="IV · Energy Transition"   draggable="false">
+    <img class="hotel-frame" src="assets/hotel-5-certs-v2.jpg"   alt="V · Credentials"          draggable="false">
   </div>
+
 </section>
 
 <!-- ═════════════════════ I — THE CREATIVE TECHNOLOGIST ═════════════════════ -->
 <section id="about" class="chapter" data-screen-label="01 About">
   <div class="chapter-inner">
+    <!-- Floor I + About + name as one unit -->
     <div class="title-card reveal">
       <div class="chapter-number">— Floor I —</div>
       <h2>About</h2>
+      <span class="po-stamp">Svetlana Zigalkina de Boer</span>
     </div>
 
+    <!-- Photo left | bio right -->
     <div class="about-intro reveal">
       <img src="assets/svetlana-photo.jpg" alt="Svetlana de Boer" class="about-photo">
       <div class="about-text">
-        <span class="po-stamp">Product Owner</span>
-        <p class="narrative italic role-line">She is also a <span class="rotator" id="roleRotator" aria-live="polite"><span class="rot-word">Builder.</span><span class="rot-word">Technologist.</span><span class="rot-word">Facilitator.</span></span></p>
-        <div class="fleuron">✦ ✦ ✦</div>
-        <p class="narrative">8+ years taking emerging technology from concept to commercial product. At Shell, I ran the full cycle — from opportunity identification and pen-and-paper PoVs, through 4 POCs, to a €22M+ rNPV product in the 24/7 clean energy domain. Comfortable in deep tech (blockchain, GenAI, IoT, energy systems) and equally focused on the business case behind it. Building AI-native, with hands-on experience in agentic workflows, Claude Code, and MS Copilot.</p>
-        <div class="stat-row">
-          <div class="stat"><div class="num">8+</div><div class="label">Years</div></div>
-          <div class="stat"><div class="num">€2M</div><div class="label">Annual R&amp;D Portfolio</div></div>
-          <div class="stat"><div class="num">€22M+</div><div class="label">rNPV</div></div>
-          <div class="stat"><div class="num">10+</div><div class="label">Applications</div></div>
-        </div>
+        <p class="narrative">Product Owner with 8+ years of experience taking emerging technology from concept to commercial product. At Shell, I ran the full cycle — from opportunity identification and pen-and-paper PoVs, through 4 POCs, to a €22M+ rNPV product in the 24/7 clean energy domain. At Accenture, I delivered ServiceNow to clients globally, leading onboarding and train-the-trainer sessions. Comfortable in deep tech (blockchain, GenAI, IoT, energy systems) and equally focused on the business case behind it. Known for bringing people along — through 101 learning sessions, workshops, and hackathons that turn complex tech into shared understanding. Building AI-native, with hands-on experience in agentic workflows, Claude Code, and MS Copilot.</p>
       </div>
     </div>
 
-    <span class="tech-skills-header reveal">Technology Skills</span>
+    <!-- Stats — centred full width below photo/bio -->
+    <div class="stat-row reveal">
+      <div class="stat"><div class="num">8+</div><div class="label">Years</div></div>
+      <div class="stat"><div class="num">€2M</div><div class="label">Annual R&amp;D Portfolio</div></div>
+      <div class="stat"><div class="num">€22M+</div><div class="label">rNPV</div></div>
+      <div class="stat"><div class="num">10+</div><div class="label">Applications</div></div>
+    </div>
+
+    <!-- Animated tagline + divider -->
+    <p class="narrative italic role-line reveal" style="text-align:center;margin-top:56px;">She is also a <span class="rotator" id="roleRotator" aria-live="polite"><span class="rot-word">Builder.</span><span class="rot-word">Technologist.</span><span class="rot-word">Facilitator.</span></span></p>
+    <div class="fleuron reveal">✦ ✦ ✦</div>
+
+    <span class="tech-skills-header reveal">She has a tech expertise in</span>
 
     <div class="dossier-stack reveal">
       <div class="dossier-file open">
@@ -1654,7 +1685,7 @@
     <!-- CENTRAL MEDIA: scrubs with scroll — doors open as user scrolls down. -->
     <div class="expand-frame">
       <div class="expand-media">
-        <video id="productHeroVideo" data-src="assets/product-hero.mp4?v=2" muted playsinline preload="auto"></video>
+        <video id="productHeroVideo" data-src="assets/product-hero.mp4?v=3" muted playsinline preload="auto"></video>
       </div>
     </div>
 
@@ -1667,72 +1698,76 @@
      that all fits on one viewport. A scroll-driven reveal pins the grid and
      uncovers blocks (colour first) then text, one step at a time. Reversible.  -->
 <section id="product-experiment" class="chapter" data-screen-label="02 Product Management">
-  <div class="exp-stage">
-    <div class="exp-sticky">
-      <div class="chapter-inner">
-        <div class="exp-title-card">
-          <div class="chapter-number">— Floor II —</div>
-          <h2>Product Management</h2>
-          <div class="subtitle">Product Management · Case Studies — scroll to reveal each project.</div>
-        </div>
+  <div class="chapter-inner">
+    <div class="exp-title-card">
+      <div class="chapter-number">— Floor II —</div>
+      <h2>Product Management</h2>
+      <div class="subtitle">Case Studies — Product Work I have done</div>
+    </div>
 
-        <div class="exp-grid" id="expGrid">
-          <div class="exp-card tone-red" data-i="0">
-            <div class="exp-content">
-              <div class="exp-top"><span class="exp-tag">Blockchain</span><span class="exp-num">I</span></div>
-              <div class="exp-rule"></div>
-              <h4>24/7 Energy Traceability</h4>
-              <p>Hourly proof that the energy being sold or consumed is green. Owned end-to-end as PO — traceability, carbon tracking and certification.</p>
-            </div>
-          </div>
-          <div class="exp-card tone-ivory" data-i="1">
-            <div class="exp-content">
-              <div class="exp-top"><span class="exp-tag">IoT</span><span class="exp-num">II</span></div>
-              <div class="exp-rule"></div>
-              <h4>Worker Safety Wearables</h4>
-              <p>Functional requirements for a deployed multi-site product at Shell refineries. Wearables, geolocation, permissions, enterprise scale.</p>
-            </div>
-          </div>
-          <div class="exp-card tone-deep" data-i="2">
-            <div class="exp-content">
-              <div class="exp-top"><span class="exp-tag">RFP / RFI</span><span class="exp-num">III</span></div>
-              <div class="exp-rule"></div>
-              <h4>Vendor Evaluation</h4>
-              <p>Formal evaluation for an IoT platform — wrote the brief, assessed vendors, recommended build vs buy with intellectual honesty.</p>
-            </div>
-          </div>
-          <div class="exp-card tone-ivory" data-i="3">
-            <div class="exp-content">
-              <div class="exp-top"><span class="exp-tag">GenAI</span><span class="exp-num">IV</span></div>
-              <div class="exp-rule"></div>
-              <h4>Electrification Moonshot</h4>
-              <p>Technical Lead, GenAI Electrification 2024. Ran the full innovation cycle — market analysis, opportunity, prototype, executive pitch.</p>
-            </div>
-          </div>
-          <div class="exp-card tone-coral" data-i="4">
-            <div class="exp-content">
-              <div class="exp-top"><span class="exp-tag">Deepfake</span><span class="exp-num">V</span></div>
-              <div class="exp-rule"></div>
-              <h4>C2PA + Blockchain</h4>
-              <p>Identified AI-generated content as a governance problem two years before C2PA became the industry answer. Prototype shipped, pitch delivered.</p>
-            </div>
-          </div>
-          <div class="exp-card tone-ivory" data-i="5">
-            <div class="exp-content">
-              <div class="exp-top"><span class="exp-tag">ServiceNow</span><span class="exp-num">VI</span></div>
-              <div class="exp-rule"></div>
-              <h4>Enterprise Delivery</h4>
-              <p>Global ServiceNow rollouts at Accenture. Client–developer translation; led train-the-trainer programmes on-site at client teams.</p>
-            </div>
-          </div>
-        </div>
-
-        <div class="exp-progress">
-          <span>Reveal</span>
-          <div class="exp-progress-track"><div class="exp-progress-fill" id="expProgressFill"></div></div>
-          <span class="exp-progress-step" id="expProgressStep">00 / 06</span>
+    <div class="case-carousel">
+      <div class="case-track" id="caseTrack">
+      <div class="exp-card tone-red" data-i="0">
+        <div class="exp-content">
+          <div class="exp-top"><span class="exp-tag">Blockchain · PO</span><span class="exp-num">I</span></div>
+          <div class="exp-rule"></div>
+          <h4>24/7 Energy Traceability</h4>
+          <p>Hourly proof that the energy being sold or consumed is green. Owned end-to-end as PO — 3 PoV exercises, 4 POCs across power, green hydrogen, heat, storage and microgrid, full roadmap through go-to-market. The first product of its kind at Shell, now live in market.</p>
+          <span class="exp-outcome">An estimated €22M+ rNPV — now commercially offered to customers packaged with Shell's energy supply contract</span>
         </div>
       </div>
+      <div class="exp-card tone-ivory" data-i="1">
+        <div class="exp-content">
+          <div class="exp-top"><span class="exp-tag">IoT · BA</span><span class="exp-num">II</span></div>
+          <div class="exp-rule"></div>
+          <h4>Worker Safety Wearables</h4>
+          <p>IoT safety wearable for Shell refinery workers — real-time geolocation, incident alerts, permission management at enterprise scale. Took it from zero: Led requirements gathering across all large Shell assets, feature prioritisation, user stories and full Agile backlog in Azure DevOps, testing and super user training. A clean handoff — operations ran with it.</p>
+          <span class="exp-outcome">Piloted at 1 Shell asset → operations scaled to 5+ assets</span>
+        </div>
+      </div>
+      <div class="exp-card tone-deep" data-i="2">
+        <div class="exp-content">
+          <div class="exp-top"><span class="exp-tag">GenAI · TechLead</span><span class="exp-num">III</span></div>
+          <div class="exp-rule"></div>
+          <h4>GenAI Hackathon</h4>
+          <p>Technical Lead for the Electrification Moonshot program. Ran the full innovation cycle — market analysis, opportunity, prototype, executive pitch. Led user research and agentic AI use case framing. Evaluated MS Copilot and internal capabilities. Zero to board-ready in one sprint.</p>
+          <span class="exp-outcome">2 production-ready prototypes, 25-person team — presented to the leadership board to evaluate GenAI readiness, confirm use cases and create a roadmap</span>
+        </div>
+      </div>
+      <div class="exp-card tone-rose" data-i="3">
+        <div class="exp-content">
+          <div class="exp-top"><span class="exp-tag">Portfolio · Application Specialist</span><span class="exp-num">IV</span></div>
+          <div class="exp-rule"></div>
+          <h4>Portfolio Management</h4>
+          <p>Managed a portfolio of 11 environmental and safety applications at Shell. Gathered improvement requirements from business users, influenced vendor roadmaps and backlogs, worked with finance on contract decisions — extensions, postponements, and decommissions. Ran super user training across sites.</p>
+          <span class="exp-outcome">11 applications managed — 1 major upgrade delivered, decommissions executed on time, and onboarding to a new app</span>
+        </div>
+      </div>
+      <div class="exp-card tone-coral" data-i="4">
+        <div class="exp-content">
+          <div class="exp-top"><span class="exp-tag">Innovation · Facilitator</span><span class="exp-num">V</span></div>
+          <div class="exp-rule"></div>
+          <h4>Emerging Tech Intersections</h4>
+          <p>Identified and prototyped where technologies converge. C2PA + Blockchain — identified AI-generated content as a governance risk, built a prototype for Shell content authenticity, worked with Brand and Marketing to map it into internal processes. IoT + Blockchain — used sensors as the data collection layer feeding on-chain verification. Blockchain + VR/Metaverse — built a Web3 loyalty app within an EV metaverse with VR so stakeholders could understand the use case by experiencing it. Initiated and facilitated a cross-innovation team spanning multiple business units — monthly ideation, info sharing, and value creation sessions.</p>
+          <span class="exp-outcome">3 prototypes shipped and cross-tech knowledge exchange setup</span>
+        </div>
+      </div>
+      <div class="exp-card tone-powder" data-i="5">
+        <div class="exp-content">
+          <div class="exp-top"><span class="exp-tag">ServiceNow · Consultant</span><span class="exp-num">VI</span></div>
+          <div class="exp-rule"></div>
+          <h4>Enterprise Delivery</h4>
+          <p>Global ServiceNow rollouts at Accenture. Led customer onboarding and train-the-trainer programmes on-site at client teams.</p>
+          <span class="exp-outcome">3 enterprise department go-lives across different countries — on-time delivery with full aftercare</span>
+        </div>
+      </div>
+    </div><!-- end case-track -->
+    </div><!-- end case-carousel -->
+
+    <div class="case-nav">
+      <button class="case-btn" id="casePrev">← Prev</button>
+      <span class="case-counter" id="caseCounter">01 / 06</span>
+      <button class="case-btn" id="caseNext">Next →</button>
     </div>
   </div>
 </section>
@@ -1749,7 +1784,7 @@
     <!-- CENTRAL MEDIA: scrubs with scroll — frame advances as user scrolls down. -->
     <div class="expand-frame">
       <div class="expand-media">
-        <video id="labHeroVideo" data-src="assets/lab-hero.mp4" muted playsinline preload="auto"></video>
+        <video id="labHeroVideo" data-src="assets/lab-hero.mp4?v=2" muted playsinline preload="auto"></video>
       </div>
     </div>
 
@@ -1774,7 +1809,7 @@
           <h4>Project No. I</h4>
           <p>A vibe-coded experiment — name and description coming soon.</p>
         </div>
-        <span class="status idea">Idea</span>
+        <span class="status coming-soon">Coming Soon</span>
       </div>
       <div class="lab-card">
         <div>
@@ -1782,15 +1817,7 @@
           <h4>Project No. II</h4>
           <p>A second small thing built to see how a tool behaves under pressure.</p>
         </div>
-        <span class="status building">Building</span>
-      </div>
-      <div class="lab-card">
-        <div>
-          <div class="icon">iii</div>
-          <h4>Project No. III</h4>
-          <p>A live prototype — link, screenshot, and short video to follow.</p>
-        </div>
-        <span class="status live">Live</span>
+        <span class="status coming-soon">Coming Soon</span>
       </div>
     </div>
 
@@ -1813,7 +1840,7 @@
       <!-- CENTRAL MEDIA: scrubs with scroll — doors open as user scrolls down. -->
       <div class="expand-frame">
         <div class="expand-media">
-          <video id="energyHeroVideo" data-src="assets/energy-hero.mp4?v=2" muted playsinline preload="auto"></video>
+          <video id="energyHeroVideo" data-src="assets/energy-hero.mp4?v=3" muted playsinline preload="auto"></video>
         </div>
       </div>
 
@@ -1846,8 +1873,8 @@
         </div>
         <div class="proof">
           <div class="tag">Storage</div>
-          <h3>Molten Salt &amp; Battery Storage</h3>
-          <p>The energy grid is inflexible — it can't easily absorb surplus or respond to demand spikes, and that rigidity is the bottleneck. Storage is what makes it manageable: capturing energy when the grid is full, releasing it when demand peaks. Built digital products to monitor and report on energy and the carbon footprint in battery storage and molten salt thermal. No vendor to evaluate, no prior art to follow. Worked directly with plant engineers to understand how the assets behaved, then translated that into a software solution and business model from scratch.</p>
+          <h3>Thermal Energy Storage &amp; Battery</h3>
+          <p>The energy grid is inflexible — it can't easily absorb surplus or respond to demand spikes, and that rigidity is the bottleneck. Storage is what makes it manageable: capturing energy when the grid is full, releasing it when demand peaks. Built digital products to monitor and report on energy and the carbon footprint in battery storage and thermal energy storage. No vendor to evaluate, no prior art to follow. Worked directly with plant engineers to understand how the assets behaved, then translated that into a software solution and business model from scratch.</p>
         </div>
         <div class="proof">
           <div class="tag">Optimisation</div>
@@ -1857,7 +1884,7 @@
         <div class="proof">
           <div class="tag">Regulation</div>
           <h3>EU + US Frameworks</h3>
-          <p>Guarantees of Origin, RED III, RFNBO rules, RECs. How certification markets and trading interact.</p>
+          <p>Close monitoring of regulation and compliance — RED III, RFNBO rules, GHG standards, energy certifications (Guarantees of Origin, RECs, Granular Certifications), and Digital Product Passport — while tracking development in voluntary market standards before they became mandatory. Translated regulatory signals into product requirements before the deadlines landed.</p>
         </div>
       </div>
 
@@ -1880,7 +1907,7 @@
          Drop the file at assets/certs-hero.mp4 to activate. -->
     <div class="expand-frame">
       <div class="expand-media">
-        <video id="certsHeroVideo" data-src="assets/certs-hero.mp4?v=2" muted playsinline preload="auto"></video>
+        <video id="certsHeroVideo" data-src="assets/certs-hero.mp4?v=3" muted playsinline preload="auto"></video>
       </div>
     </div>
 
@@ -1970,7 +1997,7 @@
     <div class="frame reveal">
       <div class="presents" style="color: var(--red); font-family: var(--f-accent); font-style: italic; font-size: 13px; letter-spacing: 0.32em; text-transform: uppercase;">— The Concierge —</div>
       <div class="contact-lines">
-        <p>Rotterdam, Netherlands</p>
+        <p>Netherlands</p>
         <p><a href="mailto:szigalkina@gmail.com">szigalkina@gmail.com</a></p>
         <p><a href="https://www.linkedin.com/in/szigalkina/" target="_blank" rel="noopener">linkedin.com/in/szigalkina</a></p>
       </div>
@@ -2000,15 +2027,16 @@
 
   /* ── Hotel: mouse-driven floor reveal ── */
   (function () {
+    var SECTIONS = ['', 'about', 'productExpand', 'labExpand', 'energy', 'certsExpand'];
+
+    // Floor I at the BOTTOM (ground floor), V at the top
+    // Zones measured top-to-bottom; floor numbering is reversed (5-i)
+    var TOPS = [0.08, 0.22, 0.40, 0.58, 0.74, 0.93];
+
     var slideshow = document.getElementById('hotelSlideshow');
-    var frames    = Array.from(document.querySelectorAll('.hotel-frame'));
-    if (!slideshow || !frames.length) return;
-
-    // Top boundary of each floor as a fraction of image height
-    // Calibrated against the hotel illustration (roof = 0–14%, then 5 floors)
-    var TOPS = [0.14, 0.30, 0.47, 0.60, 0.74, 0.90];
-
-    var sections = ['', 'about', 'product-experiment', 'lab', 'energy', 'certs'];
+    if (!slideshow) return;
+    var frames = Array.from(slideshow.querySelectorAll('.hotel-frame'));
+    if (!frames.length) return;
     var active = 0;
 
     function showFloor(n) {
@@ -2019,9 +2047,9 @@
     }
 
     function floorAt(relY) {
-      if (relY < TOPS[0] || relY > TOPS[5]) return 0; // roof / ground
+      if (relY < TOPS[0] || relY > TOPS[5]) return 0;
       for (var i = TOPS.length - 1; i >= 0; i--) {
-        if (relY >= TOPS[i]) return i + 1;
+        if (relY >= TOPS[i]) return 5 - i;
       }
       return 0;
     }
@@ -2030,15 +2058,12 @@
       var r = slideshow.getBoundingClientRect();
       showFloor(floorAt((e.clientY - r.top) / r.height));
     });
-
     slideshow.addEventListener('mouseleave', function () { showFloor(0); });
-
-    // Click a floor → smooth-scroll to that section
     slideshow.addEventListener('click', function (e) {
       var r = slideshow.getBoundingClientRect();
       var floor = floorAt((e.clientY - r.top) / r.height);
-      if (floor > 0 && sections[floor]) {
-        var el = document.getElementById(sections[floor]);
+      if (floor > 0 && SECTIONS[floor]) {
+        var el = document.getElementById(SECTIONS[floor]);
         if (el) el.scrollIntoView({ behavior: 'smooth' });
       }
     });
@@ -2046,14 +2071,23 @@
 
   /* ── Active nav floor highlight ── */
   (function () {
-    var sections = [
+    var sectionData = [
       { id: 'about',              floor: 1 },
+      { id: 'productExpand',      floor: 2 },   // opener video counts as Product
       { id: 'product-experiment', floor: 2 },
+      { id: 'labExpand',          floor: 3 },   // opener video counts as AI Lab
       { id: 'lab',                floor: 3 },
+      { id: 'energyExpand',       floor: 4 },   // opener video counts as Energy
       { id: 'energy',             floor: 4 },
+      { id: 'certsExpand',        floor: 5 },   // opener video counts as Credentials
       { id: 'certs',              floor: 5 },
     ];
     var links = Array.from(document.querySelectorAll('nav.index ul a[data-floor]'));
+
+    // Pre-resolve elements once
+    var sectionEls = sectionData.map(function (s) {
+      return { el: document.getElementById(s.id), floor: s.floor };
+    }).filter(function (s) { return s.el; });
 
     function setActive(floorNum) {
       links.forEach(function (a) {
@@ -2061,19 +2095,20 @@
       });
     }
 
-    var io = new IntersectionObserver(function (entries) {
-      entries.forEach(function (e) {
-        if (e.isIntersecting) {
-          var sec = sections.find(function (s) { return s.id === e.target.id; });
-          if (sec) setActive(sec.floor);
-        }
-      });
-    }, { threshold: 0.3 });
+    function update() {
+      // Use 40% down the viewport as the detection line so the active
+      // section switches as soon as its heading crosses that line.
+      var line = window.scrollY + window.innerHeight * 0.4;
+      var activeFloor = 0;
+      for (var i = 0; i < sectionEls.length; i++) {
+        var top = sectionEls[i].el.getBoundingClientRect().top + window.scrollY;
+        if (top <= line) activeFloor = sectionEls[i].floor;
+      }
+      setActive(activeFloor);
+    }
 
-    sections.forEach(function (s) {
-      var el = document.getElementById(s.id);
-      if (el) io.observe(el);
-    });
+    window.addEventListener('scroll', update, { passive: true });
+    update(); // run once on page load
   })();
 
   /* ── Nav: always visible ── */
@@ -2293,55 +2328,37 @@
     layout();
   })();
 
-  /* ────────────── PRODUCT · EXPERIMENT — SCROLL-REVEAL CONTROLLER ──────────────
-     Maps scroll progress through .exp-stage to a 12-step reveal:
-       steps  1–6 : block colour appears (one card at a time)
-       steps  7–12: text appears inside the corresponding cards
-     The thresholds are evenly spaced over progress 0→1 and the classes
-     toggle in both directions, so scrolling back fully reverses the animation. */
+  /* ── PRODUCT · Gallery4-style sliding carousel ──
+     Slides one card at a time. ~2 cards visible + next card peeking in. */
   (function () {
-    const stage = document.querySelector('#product-experiment .exp-stage');
-    const cards = document.querySelectorAll('#product-experiment .exp-card');
-    const fill  = document.getElementById('expProgressFill');
-    const step  = document.getElementById('expProgressStep');
-    if (!stage || cards.length === 0) return;
+    var track   = document.getElementById('caseTrack');
+    var counter = document.getElementById('caseCounter');
+    var btnPrev = document.getElementById('casePrev');
+    var btnNext = document.getElementById('caseNext');
+    if (!track || !btnPrev || !btnNext) return;
 
-    const STEPS = 7; // 6 reveal events with a tiny lead-in at progress 0
-    let ticking = false;
+    var cards  = Array.from(track.querySelectorAll('.exp-card'));
+    var total  = cards.length;
+    var index  = 0;    // leftmost visible card index
+
+    function cardW() {
+      // card width + gap (20px)
+      return cards[0].offsetWidth + 20;
+    }
 
     function update() {
-      const rect = stage.getBoundingClientRect();
-      const vh   = window.innerHeight;
-      const range = stage.offsetHeight - vh;
-      const progress = range > 0
-        ? Math.max(0, Math.min(1, -rect.top / range))
-        : 0;
-
-      let activeStep = 0;
-      cards.forEach((card, idx) => {
-        const i = idx + 1;                  // 1..6
-        const blockAt = i / STEPS;          // 1/7 .. 6/7 — block + text together
-        const blockOn = progress >= blockAt;
-        card.classList.toggle('is-visible', blockOn);
-        if (blockOn) activeStep = Math.max(activeStep, i);
-      });
-
-      if (fill) fill.style.width = (progress * 100).toFixed(1) + '%';
-      if (step) step.textContent =
-        String(activeStep).padStart(2, '0') + ' / 06';
-
-      ticking = false;
+      track.style.transform = 'translateX(-' + (index * cardW()) + 'px)';
+      if (counter) counter.textContent =
+        String(index + 1).padStart(2, '0') + ' / ' + String(total).padStart(2, '0');
+      btnPrev.disabled = index === 0;
+      btnNext.disabled = index >= total - 1;
     }
 
-    function onScroll() {
-      if (!ticking) {
-        requestAnimationFrame(update);
-        ticking = true;
-      }
-    }
+    btnPrev.addEventListener('click', function () { if (index > 0) { index--; update(); } });
+    btnNext.addEventListener('click', function () { if (index < total - 1) { index++; update(); } });
 
-    window.addEventListener('scroll',  onScroll, { passive: true });
-    window.addEventListener('resize',  onScroll);
+    // Recalculate on resize so pixel offsets stay accurate
+    window.addEventListener('resize', function () { update(); }, { passive: true });
     update();
   })();
 
