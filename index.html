@@ -2131,9 +2131,26 @@
   })();
 
   (function () {
+    // Load scrub videos fully into memory as blob URLs. Safari evicts the
+    // network-backed buffer of paused videos after idle periods or memory
+    // pressure, after which currentTime seeks stall and the frame freezes
+    // permanently. A local blob keeps every frame seekable for the life of
+    // the page and lets the revive path below reload instantly.
     document.querySelectorAll('video[data-src]').forEach((v) => {
-      v.src = v.dataset.src;
-      v.load();
+      const remote = v.dataset.src;
+      fetch(remote)
+        .then((r) => { if (!r.ok) throw new Error('HTTP ' + r.status); return r.blob(); })
+        .then((blob) => {
+          v._scrubSrc = URL.createObjectURL(blob);
+          v.src = v._scrubSrc;
+          v.load();
+        })
+        .catch(() => {
+          // Fall back to streaming straight from the network.
+          v._scrubSrc = remote;
+          v.src = remote;
+          v.load();
+        });
     });
   })();
 
@@ -2167,6 +2184,14 @@
     // Wires a scroll-scrubbed expand-hero: the central media grows from a card
     // to fill the viewport as the user scrolls, while the video's playhead
     // scrubs in lockstep. Runs once per hero so multiple openers can coexist.
+    // Safari reclaims the decoder of paused videos after idle time or heavy
+    // scrubbing; seeks then stall forever ("doors stay closed"). Defenses:
+    // seeks are serialized (one in flight, latest target queued), and a
+    // watchdog revives the element whenever its readyState collapses, a seek
+    // never completes, or the element errors out.
+    const SEEK_STALL_MS = 500;
+    const REVIVE_COOLDOWN_MS = 1000;
+
     function wireExpandHero(hero) {
       const sticky = hero.querySelector('.expand-sticky');
       const video  = hero.querySelector('video');
@@ -2175,23 +2200,79 @@
       let rafId = null;
       let videoReady = false;
       let pendingProgress = 0;
+      let seekBusy = false;
+      let seekStarted = 0;
+      let queuedTime = null;
+      let lastRevive = 0;
 
       if (video) {
         video.pause();
         video.addEventListener('loadedmetadata', () => {
           videoReady = true;
+          seekBusy = false;
+          queuedTime = null;
           seekTo(pendingProgress);
         });
+        video.addEventListener('seeked', () => {
+          seekBusy = false;
+          if (queuedTime != null) {
+            const t = queuedTime;
+            queuedTime = null;
+            startSeek(t);
+          }
+        });
+        video.addEventListener('error', revive);
+
+        // Revive proactively when the hero scrolls into view with a video
+        // whose decoder was reclaimed while it sat offscreen.
+        if ('IntersectionObserver' in window) {
+          new IntersectionObserver((entries) => {
+            entries.forEach((e) => {
+              if (e.isIntersecting && videoReady && video.readyState < 2) revive();
+            });
+          }).observe(hero);
+        }
+      }
+
+      function startSeek(t) {
+        seekBusy = true;
+        seekStarted = performance.now();
+        try { video.currentTime = t; } catch (_) { seekBusy = false; }
+      }
+
+      // Reload the element (instant — the source is an in-memory blob) and
+      // let the loadedmetadata handler re-seek to the pending scroll position.
+      function revive() {
+        if (!video) return;
+        const now = performance.now();
+        if (now - lastRevive < REVIVE_COOLDOWN_MS) return;
+        lastRevive = now;
+        videoReady = false;
+        seekBusy = false;
+        queuedTime = null;
+        if (video._scrubSrc && video.getAttribute('src') !== video._scrubSrc) {
+          video.src = video._scrubSrc;
+        }
+        try { video.load(); } catch (_) {}
       }
 
       function seekTo(p) {
-        if (!video || !videoReady || !isFinite(video.duration)) return;
+        if (!video || !videoReady) return;
+        // Decoder reclaimed (readyState collapsed, duration lost) or a seek
+        // stalled: reload. Must run before the duration guard — a reclaimed
+        // element reports duration NaN.
+        if (video.readyState === 0 ||
+            (seekBusy && performance.now() - seekStarted > SEEK_STALL_MS)) {
+          revive();
+          return;
+        }
+        if (!isFinite(video.duration)) return;
         // Avoid seeking to exact end frame (some encoders stall there).
         const t = Math.max(0, Math.min(video.duration - 0.05, p * video.duration));
         // Only seek if the delta is meaningful to avoid flooding the decoder.
-        if (Math.abs(video.currentTime - t) > 0.02) {
-          try { video.currentTime = t; } catch (_) {}
-        }
+        if (Math.abs(video.currentTime - t) <= 0.02) return;
+        if (seekBusy) { queuedTime = t; return; }
+        startSeek(t);
       }
 
       function compute() {
