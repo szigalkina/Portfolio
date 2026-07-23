@@ -955,6 +955,7 @@
   .lab-card {
     background: var(--ivory);
     padding: 34px 30px 30px;
+    min-width: 0;   /* grid items default to min-width:auto — see .lab-shots */
     min-height: 240px;
     text-align: left;
     display: flex;
@@ -972,6 +973,9 @@
     border: 1px solid rgba(42, 38, 32, 0.18);
     pointer-events: none;
   }
+  /* Flex children default to min-width:auto, which would let the screenshot
+     strip stretch the whole card past the viewport instead of scrolling. */
+  .lab-card > div { min-width: 0; }
   .lab-card:hover {
     transform: translateY(-4px);
     box-shadow: 0 22px 48px rgba(42, 38, 32, 0.28);
@@ -1002,6 +1006,140 @@
     color: var(--ink-soft);
     line-height: 1.6;
     margin-bottom: 18px;
+  }
+  /* Visit-the-project link on live specimens */
+  .lab-card .lab-link {
+    font-family: var(--f-accent);
+    font-style: italic;
+    font-size: 14px;
+    color: var(--red);
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 4px;
+    display: inline-block;
+    margin-bottom: 18px;
+    transition: color 200ms ease;
+  }
+  .lab-card .lab-link:hover { color: var(--red-deeper); }
+  /* Screenshot filmstrip — the actual App Store submission images.
+     Horizontal scroll so all six fit without crowding the card. */
+  .lab-shots {
+    display: flex;
+    gap: 10px;
+    overflow-x: auto;
+    padding-bottom: 4px;
+    margin-bottom: 18px;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    /* Without these the flex row grows to its content width instead of
+       scrolling, and the shots spill past the card on narrow screens. */
+    min-width: 0;
+    max-width: 100%;
+  }
+  .lab-shots::-webkit-scrollbar { display: none; }
+  .lab-shots img {
+    height: 150px;
+    width: auto;
+    flex: 0 0 auto;
+    border: 1px solid rgba(42, 38, 32, 0.5);
+    outline: 1px solid rgba(168, 133, 62, 0.4);
+    outline-offset: 2px;
+    display: block;
+    cursor: zoom-in;
+    transition: transform 260ms cubic-bezier(0.22, 1, 0.36, 1),
+                box-shadow 260ms ease;
+  }
+  .lab-shots img:hover,
+  .lab-shots img:focus-visible {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 26px rgba(42, 38, 32, 0.3);
+  }
+
+  /* ── Screenshot lightbox — a lantern-slide viewer ── */
+  .shot-viewer {
+    border: none;
+    padding: 0;
+    max-width: 100vw;
+    max-height: 100vh;
+    width: 100vw;
+    height: 100vh;
+    background: transparent;
+    overflow: hidden;
+  }
+  .shot-viewer::backdrop {
+    background: rgba(26, 22, 18, 0.92);
+    backdrop-filter: blur(3px);
+    -webkit-backdrop-filter: blur(3px);
+  }
+  .shot-viewer .viewer-stage {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 56px 68px;
+  }
+  .shot-viewer img {
+    max-width: 100%;
+    max-height: 100%;
+    width: auto;
+    height: auto;
+    display: block;
+    border: 1px solid rgba(244, 236, 218, 0.5);
+    outline: 1px solid rgba(168, 133, 62, 0.55);
+    outline-offset: 5px;
+    box-shadow: 0 30px 80px rgba(0, 0, 0, 0.6);
+  }
+  /* Controls: brass hairline buttons, in-world with the hotel chrome */
+  .shot-viewer button {
+    position: absolute;
+    background: transparent;
+    border: 1px solid rgba(244, 236, 218, 0.55);
+    color: var(--ivory);
+    font-family: var(--f-display);
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 200ms ease, border-color 200ms ease, color 200ms ease;
+  }
+  .shot-viewer button:hover:not(:disabled) {
+    background: var(--ivory);
+    border-color: var(--ivory);
+    color: var(--ink);
+  }
+  .shot-viewer button:disabled { opacity: 0.25; cursor: default; }
+  .shot-viewer .viewer-close {
+    top: 18px; right: 20px;
+    width: 44px; height: 44px;
+    font-size: 20px; line-height: 1;
+  }
+  .shot-viewer .viewer-prev,
+  .shot-viewer .viewer-next {
+    top: 50%;
+    transform: translateY(-50%);
+    width: 46px; height: 46px;
+    font-size: 22px; line-height: 1;
+  }
+  .shot-viewer .viewer-prev { left: 16px; }
+  .shot-viewer .viewer-next { right: 16px; }
+  .shot-viewer .viewer-caption {
+    position: absolute;
+    bottom: 20px; left: 0; right: 0;
+    text-align: center;
+    font-family: var(--f-display);
+    font-size: 10.5px;
+    font-weight: 500;
+    letter-spacing: var(--track-label);
+    text-transform: uppercase;
+    color: rgba(244, 236, 218, 0.75);
+    font-variant-numeric: tabular-nums;
+    pointer-events: none;
+  }
+  @media (max-width: 600px) {
+    .shot-viewer .viewer-stage { padding: 62px 16px 54px; }
+    .shot-viewer .viewer-prev { left: 6px; }
+    .shot-viewer .viewer-next { right: 6px; }
   }
   .lab-card .status {
     font-size: 10px;
@@ -1934,18 +2072,27 @@
       <div class="lab-card">
         <div>
           <div class="icon">i</div>
-          <h4>Project No. I</h4>
-          <p>A vibe-coded experiment — name and description coming soon.</p>
+          <h4>Blijdorp · Village App</h4>
+          <p>An iOS app for first-time moms in Blijdorp, Rotterdam. Moms nearby on a warm map, chat and groups, availability-matched meetups, and low-pressure activity invites — a walk, a coffee, the playground. Built end-to-end with Claude Code: React Native + Supabase, realtime messaging, push notifications, and App Store safety flows.</p>
+          <div class="lab-shots" id="blijdorpShots">
+            <img src="assets/blijdorp/01-welcome.jpg" data-full="assets/blijdorp/full/01-welcome.jpg" alt="Blijdorp welcome screen — continue with Apple, Google, or phone" decoding="async" width="296" height="640" tabindex="0" role="button">
+            <img src="assets/blijdorp/02-map.jpg" data-full="assets/blijdorp/full/02-map.jpg" alt="Blijdorp map — mothers nearby in the neighbourhood" decoding="async" width="296" height="640" tabindex="0" role="button">
+            <img src="assets/blijdorp/03-invite.jpg" data-full="assets/blijdorp/full/03-invite.jpg" alt="Blijdorp activity invite screen" decoding="async" width="296" height="640" tabindex="0" role="button">
+            <img src="assets/blijdorp/04-plan-a-meetup.jpg" data-full="assets/blijdorp/full/04-plan-a-meetup.jpg" alt="Blijdorp plan-a-meetup screen" decoding="async" width="296" height="640" tabindex="0" role="button">
+            <img src="assets/blijdorp/05-chat.jpg" data-full="assets/blijdorp/full/05-chat.jpg" alt="Blijdorp chat — groups and direct messages" decoding="async" width="296" height="640" tabindex="0" role="button">
+            <img src="assets/blijdorp/06-profile.jpg" data-full="assets/blijdorp/full/06-profile.jpg" alt="Blijdorp profile screen" decoding="async" width="296" height="640" tabindex="0" role="button">
+          </div>
         </div>
-        <span class="status coming-soon">Coming Soon</span>
+        <span class="status building">In App Review</span>
       </div>
       <div class="lab-card">
         <div>
           <div class="icon">ii</div>
-          <h4>Project No. II</h4>
-          <p>A second small thing built to see how a tool behaves under pressure.</p>
+          <h4>Voice Memory Album</h4>
+          <p>Tap one button and talk — in any language. AI turns the voice note into a page of a quietly luxurious photo book: a title, a message in handwritten script, milestones detected, photos attached. Family follows along through view-only links, and the album exports as a print-ready 21×21&nbsp;cm book.</p>
+          <a class="lab-link" href="https://voice-memory-album.vercel.app" target="_blank" rel="noopener">voice-memory-album.vercel.app</a>
         </div>
-        <span class="status coming-soon">Coming Soon</span>
+        <span class="status live">Live</span>
       </div>
     </div>
 
@@ -2150,6 +2297,18 @@
 <footer>
   — End of Programme · Compiled May 2026 · Set in Jost &amp; Playfair —
 </footer>
+
+<!-- Full-screen viewer for the app screenshots. Native <dialog> so it escapes
+     every stacking context and gets Esc-to-close + focus trapping for free. -->
+<dialog class="shot-viewer" id="shotViewer" aria-label="Screenshot viewer">
+  <div class="viewer-stage">
+    <img id="viewerImage" src="" alt="">
+  </div>
+  <button class="viewer-close" id="viewerClose" aria-label="Close viewer">&#10005;</button>
+  <button class="viewer-prev" id="viewerPrev" aria-label="Previous screenshot">&#8249;</button>
+  <button class="viewer-next" id="viewerNext" aria-label="Next screenshot">&#8250;</button>
+  <div class="viewer-caption" id="viewerCaption"></div>
+</dialog>
 
 <script>
 
@@ -2762,6 +2921,70 @@
       if (!isOpen) file.classList.add('open');
     });
   });
+
+  /* ── Screenshot lightbox ──
+     Click (or Enter/Space) a lab screenshot to view it full screen. The
+     high-resolution file is only fetched when the viewer opens, so the strip
+     stays light. Arrow keys and the chevrons step through the set; Esc and a
+     backdrop click close it (both native <dialog> behaviour). */
+  (function () {
+    const dlg = document.getElementById('shotViewer');
+    const strip = document.getElementById('blijdorpShots');
+    if (!dlg || !strip || typeof dlg.showModal !== 'function') return;
+
+    const shots = Array.from(strip.querySelectorAll('img'));
+    const img = document.getElementById('viewerImage');
+    const caption = document.getElementById('viewerCaption');
+    const prev = document.getElementById('viewerPrev');
+    const next = document.getElementById('viewerNext');
+    let i = 0;
+    let opener = null;
+
+    const pad = (n) => String(n).padStart(2, '0');
+
+    function show(index) {
+      i = Math.max(0, Math.min(shots.length - 1, index));
+      const shot = shots[i];
+      img.src = shot.dataset.full || shot.src;
+      img.alt = shot.alt;
+      caption.textContent = `${pad(i + 1)} / ${pad(shots.length)}`;
+      prev.disabled = i === 0;
+      next.disabled = i === shots.length - 1;
+    }
+
+    function open(index, from) {
+      opener = from || null;
+      show(index);
+      dlg.showModal();
+    }
+
+    shots.forEach((shot, index) => {
+      shot.addEventListener('click', () => open(index, shot));
+      shot.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(index, shot); }
+      });
+    });
+
+    prev.addEventListener('click', () => show(i - 1));
+    next.addEventListener('click', () => show(i + 1));
+    document.getElementById('viewerClose').addEventListener('click', () => dlg.close());
+
+    dlg.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight') { e.preventDefault(); show(i + 1); }
+      if (e.key === 'ArrowLeft')  { e.preventDefault(); show(i - 1); }
+    });
+
+    // Clicking the backdrop (i.e. outside the image) closes the viewer.
+    dlg.addEventListener('click', (e) => {
+      if (!e.target.closest('img, button')) dlg.close();
+    });
+
+    // Release the large file and hand focus back to the thumbnail.
+    dlg.addEventListener('close', () => {
+      img.removeAttribute('src');
+      if (opener) { opener.focus(); opener = null; }
+    });
+  })();
 </script>
 </body>
 </html>
