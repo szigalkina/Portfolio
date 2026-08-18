@@ -1021,6 +1021,25 @@
     transition: color 200ms ease;
   }
   .lab-card .lab-link:hover { color: var(--red-deeper); }
+  /* Row of project links (App Store + website) */
+  .lab-links { display: flex; gap: 26px; flex-wrap: wrap; align-items: baseline; }
+  .lab-links .lab-link { margin-bottom: 0; }
+  .lab-links .lab-link .arr { font-style: normal; }
+  /* Two-module chips (Meet Moms · Kids Journal) */
+  .lab-modules { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 16px; }
+  .lab-module {
+    font-family: var(--f-display);
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--red);
+    padding: 5px 12px;
+    border: 1px solid var(--red);
+  }
+  /* Solo Blijdorp card spans the full floor. */
+  .lab-grid.lab-solo { grid-template-columns: 1fr; }
+  .lab-solo .lab-card { padding: 40px 40px 34px; }
   /* Screenshot filmstrip — the actual App Store submission images.
      Horizontal scroll so all six fit without crowding the card. */
   .lab-shots {
@@ -2068,31 +2087,29 @@
 
     <p class="narrative reveal">Experiments in what's possible when a PM picks up the tools.</p>
 
-    <div class="lab-grid reveal">
+    <div class="lab-grid lab-solo reveal">
       <div class="lab-card">
         <div>
-          <div class="icon">i</div>
-          <h4>Blijdorp · Village App</h4>
-          <p>An iOS app for first-time moms in Blijdorp, Rotterdam. Moms nearby on a warm map, chat and groups, availability-matched meetups, and low-pressure activity invites — a walk, a coffee, the playground. Built end-to-end with Claude Code: React Native + Supabase, realtime messaging, push notifications, and App Store safety flows.</p>
+          <h4>Blijdorp — the neighbourhood app for mothers</h4>
+          <div class="lab-modules">
+            <span class="lab-module">Meet Moms</span>
+            <span class="lab-module">Kids Journal</span>
+          </div>
+          <p>An iOS app I designed and built end to end with Claude Code, now live on the App Store. It is really two apps in one. <strong>Meet Moms</strong> puts the mothers on your own streets on a warm map (by neighbourhood, never an exact address) and turns a walk or a coffee into a one-tap invite anyone free can accept. <strong>Kids Journal</strong> lets you talk for ten seconds in any language; each note becomes a dated album page you can share with family by link and export as a print-ready book. Built on React Native and Supabase: realtime, push notifications, and Apple's full privacy and safety review.</p>
           <div class="lab-shots" id="blijdorpShots">
-            <img src="assets/blijdorp/01-welcome.jpg" data-full="assets/blijdorp/full/01-welcome.jpg" alt="Blijdorp welcome screen — continue with Apple, Google, or phone" decoding="async" width="296" height="640" tabindex="0" role="button">
-            <img src="assets/blijdorp/02-map.jpg" data-full="assets/blijdorp/full/02-map.jpg" alt="Blijdorp map — mothers nearby in the neighbourhood" decoding="async" width="296" height="640" tabindex="0" role="button">
-            <img src="assets/blijdorp/03-invite.jpg" data-full="assets/blijdorp/full/03-invite.jpg" alt="Blijdorp activity invite screen" decoding="async" width="296" height="640" tabindex="0" role="button">
-            <img src="assets/blijdorp/04-plan-a-meetup.jpg" data-full="assets/blijdorp/full/04-plan-a-meetup.jpg" alt="Blijdorp plan-a-meetup screen" decoding="async" width="296" height="640" tabindex="0" role="button">
-            <img src="assets/blijdorp/05-chat.jpg" data-full="assets/blijdorp/full/05-chat.jpg" alt="Blijdorp chat — groups and direct messages" decoding="async" width="296" height="640" tabindex="0" role="button">
-            <img src="assets/blijdorp/06-profile.jpg" data-full="assets/blijdorp/full/06-profile.jpg" alt="Blijdorp profile screen" decoding="async" width="296" height="640" tabindex="0" role="button">
+            <img src="assets/blijdorp/01-meet.jpg" data-full="assets/blijdorp/full/01-meet.jpg" alt="Meet Moms — the mothers on your own streets on a warm map" decoding="async" width="296" height="642" tabindex="0" role="button">
+            <img src="assets/blijdorp/02-invite.jpg" data-full="assets/blijdorp/full/02-invite.jpg" alt="Meet Moms — one invite and the day has a plan" decoding="async" width="296" height="642" tabindex="0" role="button">
+            <img src="assets/blijdorp/03-journal.jpg" data-full="assets/blijdorp/full/03-journal.jpg" alt="Kids Journal — record a memory in ten seconds, any language" decoding="async" width="296" height="642" tabindex="0" role="button">
+            <img src="assets/blijdorp/04-album.jpg" data-full="assets/blijdorp/full/04-album.jpg" alt="Kids Journal — every note becomes an album page" decoding="async" width="296" height="642" tabindex="0" role="button">
+            <img src="assets/blijdorp/05-share.jpg" data-full="assets/blijdorp/full/05-share.jpg" alt="Kids Journal — grandparents just open a link" decoding="async" width="296" height="642" tabindex="0" role="button">
+            <img src="assets/blijdorp/06-print.jpg" data-full="assets/blijdorp/full/06-print.jpg" alt="Kids Journal — export the year as a real, print-ready book" decoding="async" width="296" height="642" tabindex="0" role="button">
+          </div>
+          <div class="lab-links">
+            <a class="lab-link" href="https://apps.apple.com/app/id6786826361" target="_blank" rel="noopener">App Store <span class="arr">&#8599;</span></a>
+            <a class="lab-link" href="https://blijdorp.mom" target="_blank" rel="noopener">blijdorp.mom <span class="arr">&#8599;</span></a>
           </div>
         </div>
-        <span class="status building">In App Review</span>
-      </div>
-      <div class="lab-card">
-        <div>
-          <div class="icon">ii</div>
-          <h4>Voice Memory Album</h4>
-          <p>Tap one button and talk — in any language. AI turns the voice note into a page of a quietly luxurious photo book: a title, a message in handwritten script, milestones detected, photos attached. Family follows along through view-only links, and the album exports as a print-ready 21×21&nbsp;cm book.</p>
-          <a class="lab-link" href="https://voice-memory-album.vercel.app" target="_blank" rel="noopener">voice-memory-album.vercel.app</a>
-        </div>
-        <span class="status live">Live</span>
+        <span class="status live">Live on the App Store</span>
       </div>
     </div>
 
